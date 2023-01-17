@@ -1,0 +1,23 @@
+.filter-sidenav-container {
+  // OVERFLOW VISIBLE (DEFAULT) PARA POSSIBILITAR O POSITION STICKY DOS FILTROS
+  overflow: visible;
+  background-color: #fff;
+  mat-drawer {
+    width: 250px;
+  }
+}
+
+.product-list-header {
+  mat-icon {
+    cursor: pointer;
+  }
+}
+
+.filter-card {
+  position: sticky;
+  // MEDIDA TOP NECESSÁRIA PARA O FILTER CARD NAO SER "ENGOLIDO" PELO NAVBAR
+  top: 108px;
+  &__title {
+    font-size: 18px;
+  }
+}

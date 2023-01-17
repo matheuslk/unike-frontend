@@ -1,1 +1,10 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  //MARGIN TOP PARA DESCONTAR ALTURA DA NAVBAR COM POSITION ABSOLUTE
+  margin: 80px 0px 0px 0px;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+// OVERFLOW VISIBLE (DEFAULT) PARA POSSIBILITAR O POSITION STICKY DOS FILTROS
+.mat-drawer-content {
+  overflow: visible !important;
+}
