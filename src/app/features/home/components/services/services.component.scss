@@ -1,0 +1,10 @@
+.container {
+  // 2 REM DE MARGIN POIS É SOMADO COM +1 REM DA MARGIN DO PRODUCT CARD
+  padding-top: 2rem;
+}
+
+.service-card {
+  &__title {
+    font-size: 20px;
+  }
+}

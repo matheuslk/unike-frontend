@@ -1,0 +1,18 @@
+<mat-card
+  class="service-card d-flex justify-content-center h-100"
+  *ngIf="service"
+>
+  <div class="row w-100">
+    <div class="col-12 d-flex justify-content-center mb-1">
+      <mat-icon aria-hidden="false" aria-label="Card icon">{{
+        service.icon
+      }}</mat-icon>
+      <h3 class="service-card__title mb-0 ms-2">{{ service.title }}</h3>
+    </div>
+    <div class="col-12">
+      <mat-card-content class="mb-0 text-center">
+        <p>{{ service.content }}</p>
+      </mat-card-content>
+    </div>
+  </div>
+</mat-card>

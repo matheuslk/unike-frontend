@@ -1,0 +1,8 @@
+<section class="container">
+  <h4 class="text-center mb-4">Serviços oferecidos</h4>
+  <div class="row">
+    <div *ngFor="let service of services" class="col-12 col-lg-6 mb-4">
+      <app-service-card [service]="service"></app-service-card>
+    </div>
+  </div>
+</section>
