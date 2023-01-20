@@ -5,16 +5,19 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeModule } from './features/home/home.module';
-import { SidenavComponent } from './features/sidenav/sidenav.component';
+import { SidenavModule } from './features/sidenav/sidenav.module';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
-  declarations: [AppComponent, SidenavComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    SidenavModule,
     HomeModule,
     NgbModule,
+    MatListModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

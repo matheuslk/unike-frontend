@@ -1,10 +1,13 @@
 body {
-  //MARGIN TOP PARA DESCONTAR ALTURA DA NAVBAR COM POSITION ABSOLUTE
-  margin: 80px 0px 0px 0px;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
-// OVERFLOW VISIBLE (DEFAULT) PARA POSSIBILITAR O POSITION STICKY DOS FILTROS
+// .mat-drawer {
+//   overflow-y: visible;
+// }
+
+//OVERFLOW VISIBLE (DEFAULT) PARA POSSIBILITAR O POSITION STICKY DOS FILTROS
+.mat-drawer-container,
 .mat-drawer-content {
   overflow: visible !important;
 }
