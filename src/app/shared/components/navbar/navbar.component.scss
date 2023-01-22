@@ -7,19 +7,10 @@
   mat-toolbar-row {
     height: fit-content;
   }
-  &__title {
-    font-size: 20px;
-  }
   &__search {
     img {
       width: 64px;
     }
-    mat-form-field {
-      font-weight: 500;
-      font-size: 14px;
-    }
-  }
-  &__expanded-options {
     mat-form-field {
       font-weight: 500;
       font-size: 14px;

@@ -1,12 +1,18 @@
 <main class="container pt-5">
-  <div class="product-list-header d-flex align-items-center w-100 mb-4">
-    <mat-icon
-      *ngIf="shouldShowFilterSidenav() | async"
-      aria-hidden="false"
-      aria-label="Filter icon"
-      >tune</mat-icon
-    >
-    <h4 class="ms-2 mb-0">Nossos produtos</h4>
+  <div class="row align-items-center w-100 mb-4">
+    <div class="col-9 col-lg-12">
+      <h4 class="m-0">Nossos produtos</h4>
+    </div>
+    <div class="col-3 d-flex d-lg-none justify-content-end">
+      <button
+        (click)="showFilterSidenav()"
+        mat-mini-fab
+        color="primary"
+        aria-label="Botão com ícone de menu"
+      >
+        <mat-icon>filter_list</mat-icon>
+      </button>
+    </div>
   </div>
   <div class="row">
     <div *ngIf="!(shouldShowFilterSidenav() | async)" class="col-lg-3">
