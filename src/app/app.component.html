@@ -1,14 +1,44 @@
-<mat-sidenav-container [hasBackdrop]="true">
-  <mat-sidenav [fixedInViewport]="true" mode="over" position="end">
-    <mat-nav-list>
-      <a
-        mat-list-item
-        href="..."
-        *ngFor="let option of ['Produtos', 'Serviços', 'Contato']"
-      >
-        {{ option }}
-      </a>
-    </mat-nav-list>
+<mat-sidenav-container [autosize]="true" [hasBackdrop]="true">
+  <mat-sidenav
+    [autoFocus]="false"
+    (openedChange)="sidenavOpenedChange($event, 'MENU')"
+    #menuSidenav
+    [fixedInViewport]="true"
+    mode="over"
+    position="end"
+  >
+    <div class="d-flex flex-column p-3">
+      <button class="w-100 mb-3" mat-raised-button color="primary">
+        Produtos
+      </button>
+      <button class="w-100 mb-3" mat-raised-button color="primary">
+        Serviços
+      </button>
+      <button class="w-100 mb-3" mat-raised-button color="primary">
+        Contato
+      </button>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav
+    class="product-filter-sidenav"
+    [autoFocus]="false"
+    (openedChange)="sidenavOpenedChange($event, 'PRODUCT-FILTER')"
+    #productFilterSidenav
+    [fixedInViewport]="true"
+    mode="over"
+    position="start"
+  >
+    <div class="product-filter-sidenav__filter p-3">
+      <span>Filtros</span>
+      <mat-selection-list>
+        <mat-list-option
+          color="primary"
+          *ngFor="let option of ['Anel', 'Brinco', 'Pulseira']"
+        >
+          {{ option }}
+        </mat-list-option>
+      </mat-selection-list>
+    </div>
   </mat-sidenav>
   <router-outlet></router-outlet>
 </mat-sidenav-container>
