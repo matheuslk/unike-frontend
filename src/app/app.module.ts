@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserModule } from '@angular/platform-browser';
@@ -23,6 +24,7 @@ import { HomeModule } from './features/home/home.module';
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
+    MatIconModule,
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25 }),
     StoreModule.forFeature(

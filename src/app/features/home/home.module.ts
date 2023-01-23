@@ -10,6 +10,7 @@ import { ProductsModule } from '../products/products.module';
 import { ServicesComponent } from './components/services/services.component';
 import { HomePage } from './pages/home.page';
 import { ServiceCardComponent } from './components/service-card/service-card.component';
+import { MatButtonModule } from '@angular/material/button';
 
 const pages = [HomePage];
 const components = [ServicesComponent, ServiceCardComponent];
@@ -20,6 +21,7 @@ const components = [ServicesComponent, ServiceCardComponent];
     CommonModule,
     MatCardModule,
     MatIconModule,
+    MatButtonModule,
     HomeRoutingModule,
     SharedModule,
     ProductsModule,

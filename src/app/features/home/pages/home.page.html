@@ -1,28 +1,25 @@
 <app-navbar></app-navbar>
 <header id="logo" class="logo">
   <div class="container py-5 px-5">
-    <div class="row align-items-center justify-content-center w-100 m-0">
+    <div class="row align-items-center justify-content-center w-100 m-0 py-3">
       <div class="col-lg-8 col-xl-7 col-xxl-6">
         <div class="my-5 text-center">
           <h1 class="display-5 fw-bolder text-white mb-0">
             Bem vindo a Unike Pratas!
           </h1>
           <p class="lead fw-normal text-white mb-4 mt-4">
-            Trabalhamos com produtos em prata de bali e atendemos você no local
-            de sua preferência.
+            Somos uma loja móvel de produtos em prata de bali e atendemos você
+            no local de sua preferência.
           </p>
-          <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
-            <a
-              [routerLink]="['/']"
-              fragment="products"
-              class="btn btn-primary btn-lg px-4 me-sm-3"
-              >Ver Produtos</a
-            >
+          <div class="d-grid d-sm-flex justify-content-sm-center">
+            <button mat-raised-button class="px-4 py-2" color="primary">
+              Ver Produtos
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </header>
-<app-product-list></app-product-list>
 <app-services></app-services>
+<app-product-list></app-product-list>
