@@ -2,28 +2,24 @@
   <mat-sidenav
     [autoFocus]="false"
     (openedChange)="sidenavOpenedChange($event, 'MENU')"
-    #menuSidenav
     [fixedInViewport]="true"
     mode="over"
     position="end"
-    class="menu-sidenav"
-  >
+    class="menu-sidenav">
     <div class="d-flex flex-column p-3">
       <button
         class="d-flex align-items-center w-100 mb-3"
         mat-raised-button
-        color="primary"
-      >
+        color="primary">
         <mat-icon class="me-2" aria-hidden="false" aria-label="Ícone de bolsa"
           >local_mall</mat-icon
         >
         <span>Produtos</span>
       </button>
       <button
-        class="d-flex align-items-center w-100 mb-3"
+        class="d-flex align-items-center mb-3"
         mat-raised-button
-        color="primary"
-      >
+        color="primary">
         <mat-icon
           class="me-2"
           aria-hidden="false"
@@ -33,14 +29,22 @@
         <span>Serviços</span>
       </button>
       <button
-        class="d-flex align-items-center w-100"
+        class="d-flex align-items-center w-100 mb-3"
         mat-raised-button
-        color="primary"
-      >
+        color="primary">
         <mat-icon class="me-2" aria-hidden="false" aria-label="Ícone de contato"
           >contact_page</mat-icon
         >
         <span>Contato</span>
+      </button>
+      <button
+        class="d-flex align-items-center w-100"
+        mat-raised-button
+        color="primary">
+        <mat-icon class="me-2" aria-hidden="false" aria-label="Ícone de contato"
+          >lock_person</mat-icon
+        >
+        <span>Funcionário</span>
       </button>
     </div>
   </mat-sidenav>
@@ -51,15 +55,13 @@
     #productFilterSidenav
     [fixedInViewport]="true"
     mode="over"
-    position="start"
-  >
+    position="start">
     <div class="product-filter-sidenav__filter p-3">
       <span>Filtros</span>
       <mat-selection-list>
         <mat-list-option
           color="primary"
-          *ngFor="let option of ['Anel', 'Brinco', 'Pulseira']"
-        >
+          *ngFor="let option of ['Anel', 'Brinco', 'Pulseira']">
           {{ option }}
         </mat-list-option>
       </mat-selection-list>

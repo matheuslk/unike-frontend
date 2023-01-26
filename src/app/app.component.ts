@@ -43,7 +43,7 @@ export class AppComponent implements OnInit {
     this.showMenuSidenav
       .pipe(
         skip(1),
-        filter((showSidenav) => !!showSidenav)
+        filter(showSidenav => !!showSidenav)
       )
       .subscribe(() => {
         this.menuSidenav.toggle(true);
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit {
     this.showProductFilterSidenav
       .pipe(
         skip(1),
-        filter((showSidenav) => !!showSidenav)
+        filter(showSidenav => !!showSidenav)
       )
       .subscribe(() => {
         this.productFilterSidenav.toggle(true);
