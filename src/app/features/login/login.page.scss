@@ -1,11 +1,11 @@
 .login {
   height: 100vh;
-}
-
-.login-card {
-  &__header {
-    img {
-      width: 96px;
+  .login-card {
+    box-shadow: none;
+    &__header {
+      img {
+        width: 96px;
+      }
     }
   }
 }
