@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { SidenavFacade } from 'src/app/core/state/sidenav/sidenav.facade';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { SidenavService } from 'src/app/core/services/sidenav.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent implements OnInit {
-  constructor(private sidenavFacade: SidenavFacade) {}
+export class NavbarComponent {
+  constructor(private sidenavService: SidenavService, private router: Router) {}
 
-  ngOnInit(): void {}
+  showSidenav(): void {
+    this.sidenavService.toggleMenuSidenav();
+  }
 
-  showSidenav() {
-    this.sidenavFacade.toggleSidenav();
+  redirectToLogin(): void {
+    this.router.navigateByUrl('/login');
   }
 }

@@ -5,5 +5,6 @@ body {
 //OVERFLOW VISIBLE (DEFAULT) PARA POSSIBILITAR O POSITION STICKY DOS FILTROS
 .mat-drawer-container,
 .mat-drawer-content {
+  background-color: #fff;
   overflow: visible !important;
 }

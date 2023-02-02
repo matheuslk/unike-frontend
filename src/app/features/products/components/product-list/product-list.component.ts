@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { map, take, takeUntil } from 'rxjs/operators';
 import { ScreenSizeObserverService } from 'src/app/core/services/screen-size-observer.service';
-import { ProductListFacade } from '../../state/product-list/product-list.facade';
+import { SidenavService } from 'src/app/core/services/sidenav.service';
 
 @Component({
   selector: 'app-product-list',
@@ -14,14 +14,14 @@ export class ProductListComponent implements OnInit, OnDestroy {
   viewDestroyed!: Subject<void>;
   constructor(
     private screenSizeObserverService: ScreenSizeObserverService,
-    private productListFacade: ProductListFacade
+    private sidenavService: SidenavService
   ) {}
 
   ngOnInit(): void {
     this.initData();
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.viewDestroyed.next();
     this.viewDestroyed.unsubscribe();
   }
@@ -35,12 +35,12 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   shouldShowFilterSidenav(): Observable<boolean> {
     return this.currentScreenSize.pipe(
-      map((screenSize) => screenSize < 992),
+      map(screenSize => screenSize < 992),
       take(1)
     );
   }
 
   showFilterSidenav(): void {
-    this.productListFacade.toggleFilterSidenav();
+    this.sidenavService.toggleProductFilterSidenav();
   }
 }

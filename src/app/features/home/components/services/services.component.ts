@@ -16,7 +16,7 @@ export class ServicesComponent implements OnInit {
     this.initData();
   }
 
-  initData() {
+  initData(): void {
     this.services = SERVICES;
   }
 }

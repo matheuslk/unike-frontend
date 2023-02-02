@@ -2,14 +2,12 @@
   <mat-toolbar class="navbar">
     <mat-toolbar-row>
       <div
-        class="navbar__search d-flex justify-content-evenly align-items-center w-100"
-      >
+        class="navbar__search d-flex justify-content-evenly align-items-center w-100">
         <img src="../../../../assets/img/logo.png" alt="Logo Unike Pratas" />
         <mat-form-field
           class="me-1 w-50"
           floatLabel="never"
-          appearance="legacy"
-        >
+          appearance="legacy">
           <mat-label>Pesquisar</mat-label>
           <input matInput type="text" />
           <button mat-icon-button matSuffix>
@@ -23,15 +21,19 @@
           <button class="me-2" mat-raised-button color="primary">
             Serviços
           </button>
-          <button mat-raised-button color="primary">Contato</button>
+          <button class="me-2" mat-raised-button color="primary">
+            Contato
+          </button>
+          <button (click)="redirectToLogin()" mat-raised-button color="primary">
+            Funcionário
+          </button>
         </div>
         <div class="d-block d-lg-none">
           <button
             (click)="showSidenav()"
             mat-mini-fab
             color="primary"
-            aria-label="Botão com ícone de menu"
-          >
+            aria-label="Botão com ícone de menu">
             <mat-icon>menu</mat-icon>
           </button>
         </div>

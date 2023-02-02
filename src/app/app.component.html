@@ -1,7 +1,7 @@
 <mat-sidenav-container [autosize]="true" [hasBackdrop]="true">
   <mat-sidenav
+    #menuSidenav
     [autoFocus]="false"
-    (openedChange)="sidenavOpenedChange($event, 'MENU')"
     [fixedInViewport]="true"
     mode="over"
     position="end"
@@ -49,10 +49,9 @@
     </div>
   </mat-sidenav>
   <mat-sidenav
+    #productFilterSidenav
     class="product-filter-sidenav"
     [autoFocus]="false"
-    (openedChange)="sidenavOpenedChange($event, 'PRODUCT-FILTER')"
-    #productFilterSidenav
     [fixedInViewport]="true"
     mode="over"
     position="start">

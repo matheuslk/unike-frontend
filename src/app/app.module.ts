@@ -8,10 +8,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import * as SidenavReducer from '../app/core/state/sidenav/sidenav.reducer';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeModule } from './features/home/home.module';
+import { EffectsModule } from '@ngrx/effects';
+import * as AuthReducer from './core/state/auth/auth.reducer';
+import { AuthEffects } from './core/state/auth/auth.effects';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { ErrorInterceptor } from './core/interceptors/error.interceptor';
+import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,6 +25,7 @@ import { HomeModule } from './features/home/home.module';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     HomeModule,
     NgbModule,
     MatSidenavModule,
@@ -26,11 +33,18 @@ import { HomeModule } from './features/home/home.module';
     MatButtonModule,
     MatIconModule,
     StoreModule.forRoot({}, {}),
+    StoreModule.forFeature(AuthReducer.authFeatureKey, AuthReducer.reducer),
+    EffectsModule.forRoot([AuthEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25 }),
-    StoreModule.forFeature(
-      SidenavReducer.sidenavFeatureKey,
-      SidenavReducer.reducer
-    ),
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RefreshTokenInterceptor,
+      multi: true,
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

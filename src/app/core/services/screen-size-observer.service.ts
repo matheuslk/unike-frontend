@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, fromEvent, Observable, skip } from 'rxjs';
+import { BehaviorSubject, fromEvent, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -7,27 +7,17 @@ import { BehaviorSubject, fromEvent, Observable, skip } from 'rxjs';
 export class ScreenSizeObserverService {
   currentScreenSize!: BehaviorSubject<number>;
   constructor() {
-    this.initData();
-    this.setListeners();
+    this.currentScreenSize = new BehaviorSubject(window.innerWidth);
+    this.setScreenSizeListener();
   }
 
   getCurrentScreenSize(): Observable<number> {
     return this.currentScreenSize.asObservable();
   }
 
-  private initData(): void {
-    this.currentScreenSize = new BehaviorSubject(window.innerWidth);
-  }
-
-  private setListeners(): void {
-    this.setScreenSizeListener();
-  }
-
   private setScreenSizeListener(): void {
-    fromEvent(window, 'resize')
-      .pipe(skip(1))
-      .subscribe(() => {
-        this.currentScreenSize.next(window.innerWidth);
-      });
+    fromEvent(window, 'resize').subscribe(() => {
+      this.currentScreenSize.next(window.innerWidth);
+    });
   }
 }

@@ -1,16 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { skip, filter } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { SidenavFacade } from './core/state/sidenav/sidenav.facade';
-import { ProductListFacade } from './features/products/state/product-list/product-list.facade';
+import { environment } from 'src/environments/environment';
+import { IJWT } from './core/data/interfaces/jwt.interface';
+import { LocalStorageService } from './core/services/local-storage.service';
+import { SidenavService } from './core/services/sidenav.service';
+import { AuthFacade } from './core/state/auth/auth.facade';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   @ViewChild('menuSidenav')
   menuSidenav!: MatSidenav;
   @ViewChild('productFilterSidenav')
@@ -20,52 +22,27 @@ export class AppComponent implements OnInit {
   showProductFilterSidenav!: Observable<boolean>;
 
   constructor(
-    private menuSidenavFacade: SidenavFacade,
-    private productListFacade: ProductListFacade
+    private authFacade: AuthFacade,
+    private sidenavService: SidenavService,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit(): void {
-    this.initData();
-    this.setListeners();
+    this.checkIfIsAuthenticated();
   }
 
-  initData(): void {
-    this.showMenuSidenav = this.menuSidenavFacade.selectIsOpened$();
-    this.showProductFilterSidenav =
-      this.productListFacade.selectIsFilterSidenavOpened$();
+  ngAfterViewInit(): void {
+    this.sidenavService.setMenuSidenav(this.menuSidenav);
+    this.sidenavService.setProductFilterSidenav(this.productFilterSidenav);
   }
 
-  setListeners(): void {
-    this.setSidenavsListener();
-  }
-
-  setSidenavsListener(): void {
-    this.showMenuSidenav
-      .pipe(
-        skip(1),
-        filter(showSidenav => !!showSidenav)
-      )
-      .subscribe(() => {
-        this.menuSidenav.toggle(true);
-      });
-    this.showProductFilterSidenav
-      .pipe(
-        skip(1),
-        filter(showSidenav => !!showSidenav)
-      )
-      .subscribe(() => {
-        this.productFilterSidenav.toggle(true);
-      });
-  }
-
-  sidenavOpenedChange(opened: boolean, sidenav: string): void {
-    if (opened) {
+  checkIfIsAuthenticated(): void {
+    const jwt = this.localStorageService.get<IJWT>(environment.JWT_KEY);
+    if (!jwt) {
+      this.authFacade.setIsAuthenticated(false);
       return;
     }
-    if (sidenav === 'MENU') {
-      this.menuSidenavFacade.toggleSidenav();
-    } else if (sidenav === 'PRODUCT-FILTER') {
-      this.productListFacade.toggleFilterSidenav();
-    }
+    this.authFacade.setJWT(jwt);
+    this.authFacade.check();
   }
 }
