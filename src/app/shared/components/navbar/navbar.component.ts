@@ -14,6 +14,10 @@ export class NavbarComponent {
     this.sidenavService.toggleMenuSidenav();
   }
 
+  redirectToHome(): void {
+    this.router.navigateByUrl('/home');
+  }
+
   redirectToLogin(): void {
     this.router.navigateByUrl('/login');
   }

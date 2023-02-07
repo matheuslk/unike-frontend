@@ -36,7 +36,7 @@ export class AuthFacade {
   selectIsAuthenticated$(): Observable<boolean | undefined> {
     return this.store
       .select(AuthSelectors.selectIsAuthenticated)
-      .pipe(filter(isAuthenticated => !!isAuthenticated));
+      .pipe(filter(isAuthenticated => isAuthenticated !== undefined));
   }
 
   selectJWT$(): Observable<IJWT | undefined> {

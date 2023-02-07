@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { throwError } from 'rxjs';
+import { EMPTY } from 'rxjs';
 import { catchError, exhaustMap, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { IJWT } from '../../data/interfaces/jwt.interface';
@@ -27,11 +27,9 @@ export class AuthEffects {
             tap(() => {
               this.authFacade.setIsAuthenticated(true);
             }),
-            catchError(error => {
-              //temporario
-              console.log('ERROR', error);
+            catchError(() => {
               this.authFacade.removeJWT();
-              return throwError(error);
+              return EMPTY;
             })
           );
         })
@@ -52,7 +50,6 @@ export class AuthEffects {
           };
           this.localStorageService.set<IJWT>(environment.JWT_KEY, jwt);
           this.authFacade.setJWT(jwt);
-          this.authFacade.setIsAuthenticated(true);
         })
       ),
     {

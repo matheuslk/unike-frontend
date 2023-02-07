@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { map, take, takeUntil } from 'rxjs/operators';
 import { ScreenSizeObserverService } from 'src/app/core/services/screen-size-observer.service';
@@ -14,7 +15,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
   viewDestroyed!: Subject<void>;
   constructor(
     private screenSizeObserverService: ScreenSizeObserverService,
-    private sidenavService: SidenavService
+    private sidenavService: SidenavService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -42,5 +44,9 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   showFilterSidenav(): void {
     this.sidenavService.toggleProductFilterSidenav();
+  }
+
+  redirectToProductStore(): void {
+    this.router.navigateByUrl('products/store');
   }
 }

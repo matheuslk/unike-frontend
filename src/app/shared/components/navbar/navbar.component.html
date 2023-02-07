@@ -3,7 +3,10 @@
     <mat-toolbar-row>
       <div
         class="navbar__search d-flex justify-content-evenly align-items-center w-100">
-        <img src="../../../../assets/img/logo.png" alt="Logo Unike Pratas" />
+        <img
+          (click)="redirectToHome()"
+          src="../../../../assets/img/logo.png"
+          alt="Logo Unike Pratas" />
         <mat-form-field
           class="me-1 w-50"
           floatLabel="never"

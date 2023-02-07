@@ -28,12 +28,17 @@ export const reducer: ActionReducer<AuthState, Action> = createReducer(
       jwt,
     };
   }),
-
+  on(AuthActions.authenticate, (state, { jwtResponse }) => {
+    return {
+      ...state,
+      isAuthenticated: true,
+    };
+  }),
   on(AuthActions.removeJWT, state => {
     return {
       ...state,
-      isAuthenticated: false,
       jwt: undefined,
+      isAuthenticated: false,
     };
   })
 );
