@@ -10,8 +10,8 @@ export interface AuthState {
 export const authFeatureKey = 'auth';
 
 const initialState: AuthState = {
-  jwt: undefined,
   isAuthenticated: undefined,
+  jwt: undefined,
 };
 
 export const reducer: ActionReducer<AuthState, Action> = createReducer(

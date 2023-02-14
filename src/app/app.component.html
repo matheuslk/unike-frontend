@@ -7,44 +7,70 @@
     position="end"
     class="menu-sidenav">
     <div class="d-flex flex-column p-3">
-      <button
-        class="d-flex align-items-center w-100 mb-3"
-        mat-raised-button
-        color="primary">
-        <mat-icon class="me-2" aria-hidden="false" aria-label="Ícone de bolsa"
-          >local_mall</mat-icon
-        >
-        <span>Produtos</span>
+      <button class="mb-3" mat-raised-button color="primary">
+        <div class="d-flex align-items-center">
+          <mat-icon
+            svgIcon="product"
+            class="d-flex me-2"
+            aria-hidden="false"
+            aria-label="Ícone de produto"></mat-icon>
+          <span>Produtos</span>
+        </div>
       </button>
-      <button
-        class="d-flex align-items-center mb-3"
-        mat-raised-button
-        color="primary">
-        <mat-icon
-          class="me-2"
-          aria-hidden="false"
-          aria-label="Ícone de trabalho"
-          >engineering</mat-icon
-        >
-        <span>Serviços</span>
+
+      <button class="mb-3" mat-raised-button color="primary">
+        <div class="d-flex align-items-center">
+          <mat-icon
+            svgIcon="services"
+            class="d-flex me-2"
+            aria-hidden="false"
+            aria-label="Ícone de serviço"></mat-icon>
+          <span>Serviços</span>
+        </div>
       </button>
-      <button
-        class="d-flex align-items-center w-100 mb-3"
-        mat-raised-button
-        color="primary">
-        <mat-icon class="me-2" aria-hidden="false" aria-label="Ícone de contato"
-          >contact_page</mat-icon
-        >
-        <span>Contato</span>
+
+      <button class="mb-3" mat-raised-button color="primary">
+        <div class="d-flex align-items-center">
+          <mat-icon
+            class="me-2"
+            aria-hidden="false"
+            aria-label="Ícone de contato"
+            >person_outline</mat-icon
+          >
+          <span>Contato</span>
+        </div>
       </button>
+
       <button
-        class="d-flex align-items-center w-100"
+        (click)="redirectToLogin()"
+        *ngIf="(authFacade.selectIsAuthenticated() | async) === false"
+        class="mb-3"
         mat-raised-button
         color="primary">
-        <mat-icon class="me-2" aria-hidden="false" aria-label="Ícone de contato"
-          >lock_person</mat-icon
-        >
-        <span>Funcionário</span>
+        <div class="d-flex align-items-center">
+          <mat-icon
+            svgIcon="signin"
+            class="d-flex me-2"
+            aria-hidden="false"
+            aria-label="Ícone de área restrita"></mat-icon>
+          <span>Funcionário</span>
+        </div>
+      </button>
+
+      <button
+        *ngIf="authFacade.selectIsAuthenticated() | async"
+        class="mb-3"
+        mat-raised-button
+        color="primary">
+        <div class="d-flex align-items-center">
+          <mat-icon
+            class="me-2"
+            aria-hidden="false"
+            aria-label="Ícone de logout"
+            >logout</mat-icon
+          >
+          <span>Sair</span>
+        </div>
       </button>
     </div>
   </mat-sidenav>

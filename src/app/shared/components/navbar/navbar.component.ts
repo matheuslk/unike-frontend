@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { SidenavService } from 'src/app/core/services/sidenav.service';
+import { AuthFacade } from 'src/app/core/state/auth/auth.facade';
 
 @Component({
   selector: 'app-navbar',
@@ -8,7 +10,11 @@ import { SidenavService } from 'src/app/core/services/sidenav.service';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
-  constructor(private sidenavService: SidenavService, private router: Router) {}
+  constructor(
+    private sidenavService: SidenavService,
+    public authFacade: AuthFacade,
+    private router: Router
+  ) {}
 
   showSidenav(): void {
     this.sidenavService.toggleMenuSidenav();

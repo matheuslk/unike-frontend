@@ -1,0 +1,24 @@
+.container {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  .image-preview-card {
+    max-width: 300px;
+  }
+  .size-container {
+    &__select {
+      flex: 1;
+    }
+    &__options {
+      margin: 0.25em 0;
+      padding-bottom: 1.3475em;
+      padding-left: 1.5rem;
+    }
+  }
+  .selected-sizes {
+    margin: 0.25em 0;
+    padding-bottom: 1.3475em;
+    button:nth-child(even) {
+      margin: 0rem 1.25rem;
+    }
+  }
+}

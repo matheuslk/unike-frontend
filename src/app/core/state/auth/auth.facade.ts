@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { ILoginResponse } from 'src/app/features/login/data/interfaces/login.interface';
 import { IJWT } from '../../data/interfaces/jwt.interface';
 import * as AuthActions from './auth.actions';
@@ -36,7 +36,11 @@ export class AuthFacade {
   selectIsAuthenticated$(): Observable<boolean | undefined> {
     return this.store
       .select(AuthSelectors.selectIsAuthenticated)
-      .pipe(filter(isAuthenticated => isAuthenticated !== undefined));
+      .pipe(filter(data => data !== undefined));
+  }
+
+  selectIsAuthenticated(): Observable<boolean | undefined> {
+    return this.selectIsAuthenticated$().pipe(take(1));
   }
 
   selectJWT$(): Observable<IJWT | undefined> {

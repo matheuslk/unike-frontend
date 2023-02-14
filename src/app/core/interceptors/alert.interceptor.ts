@@ -18,6 +18,7 @@ export class AlertInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((error: HttpError) => {
+        debugger;
         this.alertService.showToast('error', error.message);
         return throwError(error);
       })

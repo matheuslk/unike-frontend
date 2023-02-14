@@ -27,8 +27,19 @@
           <button class="me-2" mat-raised-button color="primary">
             Contato
           </button>
-          <button (click)="redirectToLogin()" mat-raised-button color="primary">
+          <button
+            *ngIf="(authFacade.selectIsAuthenticated() | async) === false"
+            (click)="redirectToLogin()"
+            mat-raised-button
+            color="primary">
             Funcionário
+          </button>
+          <button
+            *ngIf="authFacade.selectIsAuthenticated() | async"
+            (click)="redirectToLogin()"
+            mat-raised-button
+            color="primary">
+            Sair
           </button>
         </div>
         <div class="d-block d-lg-none">
