@@ -1,0 +1,41 @@
+<div class="mb-4">
+  <mat-card (click)="fileInput.open()" class="preview-image-card">
+    <img
+      class="m-0"
+      mat-card-image
+      [src]="currentImageUrl$.getValue()"
+      alt="Imagem do produto" />
+  </mat-card>
+  <div class="py-4">
+    <button
+      (click)="addDefaultImage()"
+      [disabled]="imageUrls[imageUrls.length - 1].uploaded === false"
+      class="me-2"
+      mat-raised-button
+      color="primary">
+      Adicionar imagem
+    </button>
+    <button
+      (click)="removeFile()"
+      [disabled]="imageUrls.length === 1"
+      mat-raised-button
+      color="primary">
+      Remover imagem
+    </button>
+  </div>
+  <div class="row flex-nowrap preview-images-container w-100 m-0">
+    <div
+      class="preview-images-container__small-image col-3 col-sm-2 p-0"
+      *ngFor="let url of imageUrls; let i = index"
+      (click)="currentIndex$.next(i)"
+      [ngClass]="{ selected: currentIndex$.getValue() === i }">
+      <img
+        class="mb-0"
+        [src]="imageUrls[i].url"
+        [alt]="'Imagem ' + i + ' do produto'" />
+    </div>
+  </div>
+  <app-file-input
+    #fileInput
+    (emitFile)="handleNewFile($event)"></app-file-input>
+</div>

@@ -1,15 +1,18 @@
 //VS-X -> ESPAÇAMENTO VERTICAL UTILIZADO ENTRE CONTAINERES
-
 .vs-1 {
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+.vs-2 {
   padding-top: 50px;
   padding-bottom: 50px;
 }
-.vs-2 {
+.vs-3 {
   padding-top: 75px;
   padding-bottom: 75px;
 }
 
-.vs-3 {
+.vs-4 {
   padding-top: (2 * 75px);
   padding-bottom: 75px;
 }

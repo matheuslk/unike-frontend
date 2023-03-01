@@ -18,19 +18,22 @@ export class ErrorInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    return next
-      .handle(request)
-      .pipe(
-        catchError((error: HttpErrorResponse) =>
-          throwError(
-            new HttpError(
-              error.status,
-              error.error.message ?? ERROR_MESSAGES.DEFAULT,
-              error.error.code ?? '0',
-              error.error.error ?? undefined
-            )
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        const status = error.status;
+        const message =
+          error.status === 500
+            ? ERROR_MESSAGES.DEFAULT
+            : error.error.message || ERROR_MESSAGES.DEFAULT;
+        return throwError(
+          new HttpError(
+            status,
+            message,
+            error.error.code ?? '0',
+            error.error.error ?? undefined
           )
-        )
-      );
+        );
+      })
+    );
   }
 }
