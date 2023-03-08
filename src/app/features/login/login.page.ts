@@ -1,31 +1,26 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
+import { getFormErrorMessage } from 'src/app/core/data/functions/get-form-error-message.function';
 import { AuthFacade } from 'src/app/core/state/auth/auth.facade';
+import { LOGIN_FORM_ERROR_MESSAGES } from './data/consts/form-error-messages.const';
 import { ILoginRequest } from './data/interfaces/login.interface';
 import { LoginService } from './data/services/login.service';
-import { getFormErrorMessage } from './data/functions/get-form-error-message.function';
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit, OnDestroy {
-  form!: FormGroup;
+  viewDestroyed$!: Subject<void>;
   isLoading$!: BehaviorSubject<boolean>;
-  viewDestroyed!: Subject<void>;
-  getFormErrorMessage!: (
-    field: string,
-    errors: ValidationErrors | null
-  ) => string | void;
+
+  form!: FormGroup;
+  formErrors!: {
+    [key: string]: string;
+  };
 
   constructor(
     private builder: FormBuilder,
@@ -40,15 +35,14 @@ export class LoginPage implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.viewDestroyed.next();
-    this.viewDestroyed.complete();
     this.isLoading$.unsubscribe();
+    this.viewDestroyed$.next();
+    this.viewDestroyed$.complete();
   }
 
   initData(): void {
+    this.viewDestroyed$ = new Subject();
     this.isLoading$ = new BehaviorSubject(false);
-    this.viewDestroyed = new Subject();
-    this.getFormErrorMessage = getFormErrorMessage;
     this.initForm();
   }
 
@@ -57,26 +51,51 @@ export class LoginPage implements OnInit, OnDestroy {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(4)]],
     });
+    Object.keys(this.form.controls).forEach((key, index) => {
+      if (index === 0) {
+        this.formErrors = {
+          [key]: '',
+        };
+        return;
+      }
+      this.formErrors[key] = '';
+    });
   }
 
   setListeners(): void {
     this.setIsLoadingListener();
+    this.setFormErrorsListener();
   }
 
   setIsLoadingListener(): void {
     this.isLoading$
-      .pipe(skip(1), takeUntil(this.viewDestroyed))
+      .pipe(skip(1), takeUntil(this.viewDestroyed$))
       .subscribe(isLoading => {
         isLoading ? this.form.disable() : this.form.enable();
       });
   }
 
+  setFormErrorsListener(): void {
+    Object.keys(this.form.controls).forEach(key => {
+      const control = this.form.controls[key];
+      control.valueChanges
+        .pipe(takeUntil(this.viewDestroyed$))
+        .subscribe(() => {
+          this.formErrors[key] =
+            getFormErrorMessage(
+              key,
+              control.errors,
+              LOGIN_FORM_ERROR_MESSAGES
+            ) ?? '';
+        });
+    });
+  }
+
   login(): void {
     this.isLoading$.next(true);
-    const request = this.form.value as ILoginRequest;
     this.loginService
-      .login(request)
-      .pipe(takeUntil(this.viewDestroyed))
+      .login(this.form.value as ILoginRequest)
+      .pipe(takeUntil(this.viewDestroyed$))
       .subscribe(response => {
         this.authFacade.authenticate(response);
         this.redirectToHome();

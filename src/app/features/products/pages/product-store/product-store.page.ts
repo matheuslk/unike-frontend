@@ -1,7 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
+import { getFormErrorMessage } from 'src/app/core/data/functions/get-form-error-message.function';
+import { PRODUCT_STORE_FORM_ERROR_MESSAGES } from '../../data/consts/form-error-messages.const';
 
 @Component({
   selector: 'app-product-store',
@@ -45,8 +52,12 @@ export class ProductStorePage implements OnInit, OnDestroy {
         '',
         [Validators.required, Validators.min(1), Validators.max(7000)],
       ],
-      amount: ['', Validators.min(1), Validators.max(50)],
-      sizes: [''],
+      category_id: ['', [Validators.required]],
+      amount: [
+        '',
+        [Validators.required, Validators.min(1), Validators.max(50)],
+      ],
+      sizes: [[]],
       description: ['', [Validators.maxLength(255)]],
     });
   }
@@ -61,6 +72,13 @@ export class ProductStorePage implements OnInit, OnDestroy {
       .subscribe(files => {
         console.log('PRODUCT STORE FILES LISTENER', files);
       });
+  }
+
+  getFormError(field: string, errors: ValidationErrors | null): string {
+    return (
+      getFormErrorMessage(field, errors, PRODUCT_STORE_FORM_ERROR_MESSAGES) ??
+      ''
+    );
   }
 
   storeProduct(): void {}

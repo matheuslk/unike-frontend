@@ -9,7 +9,7 @@ export class LoginService {
   constructor(private http: HttpClient) {}
 
   login(request: ILoginRequest): Observable<ILoginResponse> {
-    return this.http.post<ILoginResponse>(endpoints.GUEST.login, {
+    return this.http.post<ILoginResponse>(endpoints.guest.login, {
       ...request,
     });
   }

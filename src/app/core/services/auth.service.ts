@@ -11,11 +11,11 @@ export class AuthService {
   constructor(private httpClient: HttpClient) {}
 
   check(): Observable<any> {
-    return this.httpClient.get(endpoints.AUTH.check);
+    return this.httpClient.get(endpoints.auth.check);
   }
 
   refresh(refresh_token: string): Observable<ILoginResponse> {
-    return this.httpClient.get<ILoginResponse>(endpoints.GUEST.refresh, {
+    return this.httpClient.get<ILoginResponse>(endpoints.guest.refresh, {
       headers: {
         refresh_token,
       },

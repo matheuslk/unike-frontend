@@ -24,13 +24,8 @@
                     autocomplete="email"
                     formControlName="email"
                     matInput />
-                  <mat-error *ngIf="form.controls['email'].errors">
-                    {{
-                      getFormErrorMessage(
-                        'email',
-                        form.controls['email'].errors
-                      )
-                    }}
+                  <mat-error *ngIf="formErrors['email']">
+                    {{ formErrors['email'] }}
                   </mat-error>
                 </mat-form-field>
               </div>
@@ -42,19 +37,12 @@
                     type="password"
                     formControlName="password"
                     matInput />
-                  <mat-error
-                    class="mb-2"
-                    *ngIf="form.controls['password'].errors">
-                    {{
-                      getFormErrorMessage(
-                        'password',
-                        form.controls['password'].errors
-                      )
-                    }}
+                  <mat-error class="mb-2" *ngIf="formErrors['password']">
+                    {{ formErrors['password'] }}
                   </mat-error>
                 </mat-form-field>
               </div>
-              <div class="d-flex justify-content-end col-12">
+              <div class="d-flex justify-content-end col-12 mt-3">
                 <button
                   (click)="redirectToHome()"
                   type="button"

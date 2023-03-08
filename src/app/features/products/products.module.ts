@@ -12,14 +12,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FileInputComponent } from './components/file-input/file-input.component';
 import { FilePreviewComponent } from './components/file-preview/file-preview.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
 
-import { ProductStorePage } from './pages/product-store/product-store.page';
 import { SizesInputComponent } from './components/sizes-input/sizes-input.component';
+import { ProductService } from './data/services/product.service';
+import { ProductStorePage } from './pages/product-store/product-store.page';
+import { ProductListEffects } from './state/product-list/product-list.effects';
+import { ProductListFacade } from './state/product-list/product-list.facade';
+import * as ProductListReducer from './state/product-list/product-list.reducer';
 
 const pages = [ProductStorePage];
 const components = [ProductListComponent, ProductCardComponent];
@@ -28,6 +34,8 @@ const internalComponents = [
   FilePreviewComponent,
   SizesInputComponent,
 ];
+const services = [ProductService];
+const facades = [ProductListFacade];
 
 @NgModule({
   declarations: [...pages, ...components, ...internalComponents],
@@ -46,7 +54,13 @@ const internalComponents = [
     MatBadgeModule,
     MatChipsModule,
     SharedModule,
+    StoreModule.forFeature(
+      ProductListReducer.productListFeatureKey,
+      ProductListReducer.reducer
+    ),
+    EffectsModule.forFeature([ProductListEffects]),
   ],
+  providers: [...services, ...facades],
   exports: [...components],
 })
 export class ProductsModule {}

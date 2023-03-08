@@ -22,7 +22,7 @@ export class ErrorInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         const status = error.status;
         const message =
-          error.status === 500
+          status === 500
             ? ERROR_MESSAGES.DEFAULT
             : error.error.message || ERROR_MESSAGES.DEFAULT;
         return throwError(

@@ -2,7 +2,7 @@ import { environment } from 'src/environments/environment';
 import { endpoints } from '../consts/endpoints.const';
 
 export function isPrivateEndpoint(requestUrl: string): boolean {
-  const AUTH_ENDPOINTS = endpoints.AUTH;
+  const AUTH_ENDPOINTS = endpoints.auth;
   const matchedEndpoint = Object.keys(AUTH_ENDPOINTS)
     .map(key => AUTH_ENDPOINTS[key as keyof typeof AUTH_ENDPOINTS])
     .find(

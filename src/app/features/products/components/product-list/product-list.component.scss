@@ -6,17 +6,29 @@
     position: sticky;
     // MEDIDA TOP NECESSÁRIA PARA O FILTER CARD NAO SER "ENGOLIDO" PELO NAVBAR
     top: 80px;
+    &__content {
+      text-transform: capitalize;
+    }
     &__title {
       font-size: 18px;
     }
   }
-  .product-cards {
+  .products {
     .row > * {
       margin-bottom: 1rem;
     }
     .row > *:nth-last-child(-n + 1) {
       margin-bottom: 0px;
     }
+  }
+  .is-loading {
+    .products__card {
+      opacity: 0.1;
+    }
+    background-image: url(../../../../../assets/img/gifs/loading.gif);
+    background-size: 192px;
+    background-repeat: no-repeat;
+    background-position: top;
   }
 }
 
