@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-12 col-lg-6">
         <app-file-preview
-          [files]="files$.getValue()"
+          [fileProps]="{ files: files$.getValue() }"
           (emitFiles)="files$.next($event)"></app-file-preview>
       </div>
       <div class="col-12 col-lg-6">

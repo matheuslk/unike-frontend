@@ -21,15 +21,6 @@
       margin-bottom: 0px;
     }
   }
-  .is-loading {
-    .products__card {
-      opacity: 0.1;
-    }
-    background-image: url(../../../../../assets/img/gifs/loading.gif);
-    background-size: 192px;
-    background-repeat: no-repeat;
-    background-position: top;
-  }
 }
 
 @include media-breakpoint-up(xl) {

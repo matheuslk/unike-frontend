@@ -14,29 +14,28 @@
         <button
           (click)="redirectToProductStore()"
           mat-mini-fab
-          color="primary"
           aria-label="Botão com ícone adição">
           <mat-icon>add</mat-icon>
         </button>
         <button
+          [disabled]="data.categories?.isLoading || data.categories?.error"
           class="d-inline-block d-lg-none ms-3"
           (click)="showFilterSidenav()"
           mat-mini-fab
-          color="primary"
           aria-label="Botão com ícone de menu">
           <mat-icon>filter_list</mat-icon>
         </button>
       </div>
     </div>
-    <div class="row">
+    <div
+      *ngIf="!data.categories?.isLoading && !data.categories?.error"
+      class="row">
       <div
         *ngIf="(shouldShowFilterSidenav() | async) === false"
         class="col-lg-3">
         <mat-card class="filter-card">
           <mat-card-title class="filter-card__title">Filtros</mat-card-title>
-          <mat-card-content
-            class="filter-card__content"
-            *ngIf="!data.categories?.isLoading">
+          <mat-card-content class="filter-card__content">
             <mat-selection-list
               #filterList
               (selectionChange)="handleFilterOnChange($event)">
@@ -48,20 +47,32 @@
               </mat-list-option>
             </mat-selection-list>
           </mat-card-content>
-          <app-loader *ngIf="data.categories?.isLoading"></app-loader>
         </mat-card>
       </div>
-      <div
-        [ngClass]="{ 'is-loading': data.products?.isLoading }"
-        class="products col-12 col-lg-9">
-        <div class="row">
+      <div class="products col-12 col-lg-9">
+        <div
+          *ngIf="!data.products?.isLoading && !data.products?.error"
+          class="row">
           <div
-            *ngFor="let value of [1, 2, 3, 4, 5, 6]"
+            *ngFor="let product of data.products?.data"
             class="col-12 col-md-6 col-xl-4">
-            <app-product-card class="products__card"></app-product-card>
+            <app-product-card
+              (click)="redirectToProduct(product.id)"
+              [product]="product"
+              class="products__card"></app-product-card>
           </div>
         </div>
+        <app-loader *ngIf="data.products?.isLoading"></app-loader>
+        <p
+          *ngIf="!data.products?.isLoading && productErrorMessage"
+          class="text-center">
+          {{ productErrorMessage }}
+        </p>
       </div>
     </div>
+    <app-loader *ngIf="data.categories?.isLoading"></app-loader>
+    <p *ngIf="data.categories?.error" class="text-center">
+      {{ data.categories?.error?.message }}
+    </p>
   </div>
 </main>

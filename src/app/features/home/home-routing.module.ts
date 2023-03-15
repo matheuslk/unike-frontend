@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from 'src/app/core/guards/auth.guard';
 import { GuestGuard } from 'src/app/core/guards/guest.guard';
 import { ProductStorePage } from '../products/pages/product-store/product-store.page';
+import { ProductPage } from '../products/pages/product/product.page';
 import { HomePage } from './home.page';
 
 const routes: Routes = [
@@ -19,6 +20,10 @@ const routes: Routes = [
     path: 'products/store',
     component: ProductStorePage,
     // canActivate: [AuthGuard],
+  },
+  {
+    path: 'products/:id',
+    component: ProductPage,
   },
   {
     path: 'login',

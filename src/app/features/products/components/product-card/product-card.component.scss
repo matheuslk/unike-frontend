@@ -1,8 +1,10 @@
 .product-card {
   &__content {
-    h2 {
+    &__title {
       font-size: 16px;
+      text-transform: capitalize;
     }
+
     span {
       font-size: 18px;
     }

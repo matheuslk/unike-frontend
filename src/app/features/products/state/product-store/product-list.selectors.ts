@@ -8,7 +8,7 @@ import {
 import {
   productListFeatureKey,
   ProductListState,
-} from './product-list.reducer';
+} from './product-store.reducer';
 
 export const selectProductListState = createFeatureSelector<ProductListState>(
   productListFeatureKey

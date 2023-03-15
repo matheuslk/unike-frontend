@@ -9,7 +9,7 @@ import {
   IFilterProductResponse,
 } from '../../data/interfaces/product.interface';
 
-import * as ProductListActions from './product-list.actions';
+import * as ProductListActions from './product-store.actions';
 import * as ProductListSelectors from './product-list.selectors';
 
 @Injectable()

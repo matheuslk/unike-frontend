@@ -1,49 +1,20 @@
-<nav *ngIf="{ isAuthenticated: (isAuthenticated$ | async) } as data">
+<nav>
   <mat-toolbar class="navbar">
-    <mat-toolbar-row>
-      <div
-        class="navbar__search d-flex justify-content-evenly align-items-center w-100">
-        <img
-          (click)="redirectToHome()"
-          src="../../../../assets/img/logo.png"
-          alt="Logo Unike Pratas" />
-        <mat-form-field
-          class="me-1 w-50"
-          floatLabel="never"
-          appearance="legacy">
-          <mat-label>Pesquisar</mat-label>
-          <input [formControl]="searchControl" matInput type="text" />
-          <button mat-icon-button matSuffix>
-            <mat-icon>search</mat-icon>
-          </button>
-        </mat-form-field>
-
-        <div class="d-none d-lg-block">
-          <button class="me-2" mat-stroked-button>Produtos</button>
-          <button class="me-2" mat-stroked-button>Serviços</button>
-          <button class="me-2" mat-stroked-button>Contato</button>
-          <button
-            *ngIf="!data.isAuthenticated"
-            (click)="redirectToLogin()"
-            mat-stroked-button>
-            Funcionário
-          </button>
-          <button
-            *ngIf="data.isAuthenticated"
-            (click)="redirectToLogin()"
-            mat-stroked-button>
-            Sair
-          </button>
-        </div>
-        <div class="d-block d-lg-none">
-          <button
-            (click)="showSidenav()"
-            mat-mini-fab
-            aria-label="Botão com ícone de menu">
-            <mat-icon>menu</mat-icon>
-          </button>
-        </div>
-      </div>
+    <mat-toolbar-row
+      class="navbar__search align-items-center flex-wrap flex-sm-nowrap justify-content-between">
+      <app-navbar-logo class="navbar__search__logo"></app-navbar-logo>
+      <mat-form-field
+        appearance="outline"
+        class="navbar__search__input"
+        *ngIf="showSearchInput"
+        floatLabel="never">
+        <mat-label>Pesquisar</mat-label>
+        <input [formControl]="searchControl" matInput type="text" />
+        <button mat-icon-button matSuffix>
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
+      <app-navbar-menu class="navbar__search__menu"></app-navbar-menu>
     </mat-toolbar-row>
   </mat-toolbar>
 </nav>

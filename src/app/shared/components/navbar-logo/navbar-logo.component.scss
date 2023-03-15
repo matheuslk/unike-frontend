@@ -1,0 +1,30 @@
+@import '../../../../../node_modules/bootstrap/scss/functions';
+@import '../../../../../node_modules/bootstrap/scss/variables';
+@import '../../../../../node_modules/bootstrap/scss/mixins/breakpoints';
+
+.logo {
+  h1 {
+    // display: block;
+    display: none;
+    font-size: 24px;
+  }
+  &__rounded-img {
+    display: block;
+    // display: none;
+    img {
+      cursor: pointer;
+      width: 64px;
+    }
+  }
+}
+
+// @include media-breakpoint-up(sm) {
+//   .logo {
+//     h1 {
+//       display: none;
+//     }
+//     &__rounded-img {
+//       display: block;
+//     }
+//   }
+// }

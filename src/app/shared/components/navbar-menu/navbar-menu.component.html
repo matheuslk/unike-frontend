@@ -1,0 +1,26 @@
+<div
+  *ngIf="{ isAuthenticated: (isAuthenticated$ | async) } as data"
+  class="menu">
+  <div class="d-none d-lg-block">
+    <button class="me-2" mat-button>Produtos</button>
+    <button class="me-2" mat-button>Serviços</button>
+    <button class="me-2" mat-button>Contato</button>
+    <button
+      *ngIf="!data.isAuthenticated"
+      (click)="redirectToLogin()"
+      mat-button>
+      Funcionário
+    </button>
+    <button *ngIf="data.isAuthenticated" (click)="redirectToLogin()" mat-button>
+      Sair
+    </button>
+  </div>
+  <div class="d-block d-lg-none">
+    <button
+      (click)="showSidenav()"
+      mat-mini-fab
+      aria-label="Botão com ícone de menu">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+</div>

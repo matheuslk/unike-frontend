@@ -25,9 +25,13 @@ import { ProductService } from './data/services/product.service';
 import { ProductStorePage } from './pages/product-store/product-store.page';
 import { ProductListEffects } from './state/product-list/product-list.effects';
 import { ProductListFacade } from './state/product-list/product-list.facade';
+import * as ProductReducer from './state/product/product.reducer';
 import * as ProductListReducer from './state/product-list/product-list.reducer';
+import { ProductPage } from './pages/product/product.page';
+import { ProductFacade } from './state/product/product.facade';
+import { ProductEffects } from './state/product/product.effects';
 
-const pages = [ProductStorePage];
+const pages = [ProductStorePage, ProductPage];
 const components = [ProductListComponent, ProductCardComponent];
 const internalComponents = [
   FileInputComponent,
@@ -35,7 +39,7 @@ const internalComponents = [
   SizesInputComponent,
 ];
 const services = [ProductService];
-const facades = [ProductListFacade];
+const facades = [ProductFacade, ProductListFacade];
 
 @NgModule({
   declarations: [...pages, ...components, ...internalComponents],
@@ -55,10 +59,14 @@ const facades = [ProductListFacade];
     MatChipsModule,
     SharedModule,
     StoreModule.forFeature(
+      ProductReducer.productFeatureKey,
+      ProductReducer.reducer
+    ),
+    StoreModule.forFeature(
       ProductListReducer.productListFeatureKey,
       ProductListReducer.reducer
     ),
-    EffectsModule.forFeature([ProductListEffects]),
+    EffectsModule.forFeature([ProductEffects, ProductListEffects]),
   ],
   providers: [...services, ...facades],
   exports: [...components],

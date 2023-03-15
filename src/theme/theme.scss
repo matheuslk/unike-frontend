@@ -1,25 +1,28 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
+@use './typography' as typography;
 @use './components/navbar/navbar-theme' as navbar;
 
 @include mat.core();
 
-$custom-theme-primary: mat.define-palette(mat.$grey-palette, 900);
-$custom-theme-secondary: mat.define-palette(mat.$grey-palette, A100);
+$primary-palette: mat.define-palette(mat.$grey-palette, 900);
+$accent-palette: mat.define-palette(mat.$grey-palette, A100);
 
 $custom-theme: mat.define-light-theme(
   (
     color: (
-      primary: $custom-theme-primary,
-      accent: $custom-theme-secondary,
+      primary: $primary-palette,
+      accent: $accent-palette,
     ),
   )
 );
 
-// Emit theme-dependent styles for common features used across multiple components.
+//Emit theme-dependent styles for common features used across multiple components.
 @include mat.core-theme($custom-theme);
 //Emit theme to all the components
 @include mat.all-component-themes($custom-theme);
 
+//Custom Typography Classes
+@include typography.theme($custom-theme);
 //Custom Navbar Theme
 @include navbar.theme($custom-theme);

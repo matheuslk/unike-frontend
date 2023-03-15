@@ -1,6 +1,11 @@
 @import './global/spacing.scss';
-body {
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('./assets/fonts/Roboto-Regular.ttf');
+}
+* {
+  font-family: 'Roboto';
 }
 
 //OVERFLOW VISIBLE (DEFAULT) PARA POSSIBILITAR O POSITION STICKY DOS FILTROS
@@ -8,4 +13,11 @@ body {
 .mat-drawer-content {
   background-color: #fff;
   overflow: visible !important;
+}
+
+//REMOVE PADDING BOTTOM DO SEARCH INPUT -> NAVBAR
+.navbar__search__input {
+  .mat-form-field-wrapper {
+    padding-bottom: 0rem;
+  }
 }

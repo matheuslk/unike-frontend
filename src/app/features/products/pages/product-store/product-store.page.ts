@@ -17,7 +17,7 @@ import { PRODUCT_STORE_FORM_ERROR_MESSAGES } from '../../data/consts/form-error-
 })
 export class ProductStorePage implements OnInit, OnDestroy {
   viewDestroyed$!: Subject<void>;
-  files$!: BehaviorSubject<Array<File | null>>;
+  files$!: BehaviorSubject<Array<File>>;
   form!: FormGroup;
 
   constructor(private builder: FormBuilder) {}
@@ -34,7 +34,7 @@ export class ProductStorePage implements OnInit, OnDestroy {
 
   initData(): void {
     this.viewDestroyed$ = new Subject();
-    this.files$ = new BehaviorSubject<Array<File | null>>([]);
+    this.files$ = new BehaviorSubject<Array<File>>([]);
     this.initForm();
   }
 
@@ -81,5 +81,7 @@ export class ProductStorePage implements OnInit, OnDestroy {
     );
   }
 
-  storeProduct(): void {}
+  storeProduct(): void {
+    console.log('STORE PRODUCT - FORM DATA', this.form.value);
+  }
 }

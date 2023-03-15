@@ -1,24 +1,58 @@
+@import '../../../../../node_modules/bootstrap/scss/functions';
+@import '../../../../../node_modules/bootstrap/scss/variables';
+@import '../../../../../node_modules/bootstrap/scss/mixins/breakpoints';
+
 .navbar {
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   z-index: 100;
-  mat-toolbar-row {
-    height: fit-content;
-  }
+  padding: 0.75rem 0rem;
   &__search {
-    img {
-      cursor: pointer;
-      width: 64px;
+    height: fit-content;
+    &__logo {
+      order: 1;
     }
-    mat-form-field {
+    &__input {
+      order: 3;
+      width: 100%;
       font-weight: 500;
       font-size: 14px;
+      margin-top: 0.5rem;
+      padding-left: 0px;
+      mat-icon {
+        font-size: 22px !important;
+      }
+    }
+    &__menu {
+      order: 2;
     }
   }
 }
 
-mat-icon {
-  font-size: 22px !important;
+@include media-breakpoint-up(sm) {
+  .navbar {
+    &__search {
+      &__input {
+        order: 2;
+        width: 75%;
+        margin-top: 0rem;
+      }
+      &__menu {
+        order: 3;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .navbar {
+    &__search {
+      &__input {
+        width: 50%;
+        padding-left: 16px;
+      }
+    }
+  }
 }

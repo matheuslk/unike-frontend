@@ -5,9 +5,16 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { BehaviorSubject, skip, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { FileInputComponent } from '../file-input/file-input.component';
+
+interface IFileProps {
+  urls?: string[];
+  files?: File[];
+  previewOnly?: boolean;
+}
 
 @Component({
   selector: 'app-file-preview',
@@ -16,19 +23,19 @@ import { BehaviorSubject, skip, Subject, takeUntil } from 'rxjs';
 })
 export class FilePreviewComponent implements OnInit, OnDestroy {
   viewDestroyed$!: Subject<void>;
-  defaultProductImage!: string;
+  defaultProductImageUrl!: string;
 
-  imageUrls!: Array<{
-    url: SafeUrl;
-    uploaded: boolean;
-  }>;
-  currentImageUrl$!: BehaviorSubject<SafeUrl>;
   currentIndex$!: BehaviorSubject<number>;
+  currentImageUrl$!: BehaviorSubject<string>;
 
-  @Input() files!: Array<File | null>;
-  @Output() emitFiles = new EventEmitter<Array<File | null>>();
+  productFiles!: File[];
+  productImageUrls!: string[];
 
-  constructor(private sanitize: DomSanitizer) {}
+  @Input() fileProps!: IFileProps;
+  @Output() emitFiles = new EventEmitter<File[]>();
+
+  @ViewChild('fileInput') fileInput!: FileInputComponent;
+  constructor() {}
 
   ngOnInit(): void {
     this.initData();
@@ -41,23 +48,23 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
   }
 
   initData(): void {
+    console.log('FILE PREVIEW - PROPS', this.fileProps);
     this.viewDestroyed$ = new Subject();
-    this.defaultProductImage = '../../../../assets/img/default.jpg';
+    this.defaultProductImageUrl = '../../../../assets/img/default.jpg';
+    this.currentIndex$ = new BehaviorSubject(0);
+    this.currentImageUrl$ = new BehaviorSubject('');
     this.initImageUrls();
   }
 
   initImageUrls(): void {
-    const imageUrl = {
-      url: this.sanitizeFileUrl(this.defaultProductImage),
-      uploaded: false,
-    };
-    this.imageUrls = [imageUrl];
-    this.currentIndex$ = new BehaviorSubject(0);
-    this.currentImageUrl$ = new BehaviorSubject(imageUrl.url);
-
-    this.files.push(null);
-    this.emitFiles.next(this.files);
-    return;
+    this.productImageUrls = this.fileProps.urls ?? [];
+    if (this.fileProps.previewOnly) {
+      return;
+    }
+    this.productFiles = this.fileProps.files ?? [];
+    this.productFiles.length
+      ? this.generateImageUrlsFromFiles()
+      : this.addDefaultImageUrl();
   }
 
   setListeners(): void {
@@ -66,58 +73,66 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
 
   setCurrentIndexListener(): void {
     this.currentIndex$
-      .pipe(skip(1), takeUntil(this.viewDestroyed$))
+      .pipe(takeUntil(this.viewDestroyed$))
       .subscribe(currentIndex => {
-        this.currentImageUrl$.next(this.imageUrls[currentIndex].url);
+        console.log('FILE PREVIEW - CURRENT INDEX LISTENER', currentIndex);
+        this.currentImageUrl$.next(
+          this.productImageUrls ? this.productImageUrls[currentIndex] : ''
+        );
       });
   }
 
-  removeFile(): void {
-    const index = this.currentIndex$.getValue();
-    this.imageUrls.splice(index, 1);
-    this.currentIndex$.next(index > 0 ? index - 1 : index);
+  //FILE UPLOAD METHODS
 
-    this.files.splice(index, 1);
-    this.emitFiles.next(this.files);
+  addDefaultImageUrl(): void {
+    console.log('FILE PREVIEW - ADD DEFAULT IMAGE');
+    this.productImageUrls.push(this.defaultProductImageUrl);
+    this.currentIndex$.next(this.productImageUrls.length - 1);
   }
 
-  addDefaultImage(): void {
-    const imageUrl = {
-      url: this.sanitizeFileUrl(this.defaultProductImage),
-      uploaded: false,
-    };
-    this.imageUrls.push(imageUrl);
-    this.currentIndex$.next(this.imageUrls.length - 1);
+  async generateImageUrlsFromFiles(): Promise<void> {
+    this.productImageUrls = await Promise.all(
+      this.productFiles.map(async file => await this.generateFileUrl(file))
+    );
+  }
 
-    this.files.push(null);
-    this.emitFiles.next(this.files);
+  openFileInput(): void {
+    if (this.fileProps.previewOnly) {
+      return;
+    }
+    this.fileInput.open();
   }
 
   async handleNewFile(file: File): Promise<void> {
-    const index = this.currentIndex$.getValue();
-    const imageUrl = {
-      url: await this.getImageUrl(file, index),
-      uploaded: true,
-    };
-    this.imageUrls[index] = imageUrl;
-    this.currentIndex$.next(index);
+    console.log('HANDLE NEW FILE');
+    // const index = this.currentIndex$.getValue();
 
-    this.files[index] = file;
-    this.emitFiles.next(this.files);
+    // const imageUrl = await this.generateFileUrl(file);
+    // this.imageUrls?[index] = imageUrl;
+    // this.currentIndex$.next(index);
+
+    // this.files[index] = file;
+    // this.emitFiles.next(this.files);
   }
 
-  async getImageUrl(file: File, index: number): Promise<SafeUrl> {
-    return await new Promise<SafeUrl>((resolve, reject) => {
+  removeFile(): void {
+    console.log('REMOVE FILE');
+    // const index = this.currentIndex$.getValue();
+    // this.imageUrls.splice(index, 1);
+    // this.currentIndex$.next(index > 0 ? index - 1 : index);
+
+    // this.files.splice(index, 1);
+    // this.emitFiles.next(this.files);
+  }
+
+  async generateFileUrl(file: File): Promise<string> {
+    return await new Promise<string>((resolve, reject) => {
       let reader = new FileReader();
       reader.onload = (): void => {
-        resolve(this.sanitize.bypassSecurityTrustUrl(reader.result as string));
+        resolve(reader.result as string);
       };
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
-  }
-
-  sanitizeFileUrl(url: string): SafeUrl {
-    return this.sanitize.bypassSecurityTrustUrl(url);
   }
 }

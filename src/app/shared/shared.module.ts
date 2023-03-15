@@ -8,11 +8,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoaderComponent } from './components/utils/loader/loader.component';
+import { NavbarLogoComponent } from './components/navbar-logo/navbar-logo.component';
+import { NavbarMenuComponent } from './components/navbar-menu/navbar-menu.component';
 
 const components = [NavbarComponent, LoaderComponent];
-
+const internalComponents = [NavbarLogoComponent];
 @NgModule({
-  declarations: [...components],
+  declarations: [...components, ...internalComponents, NavbarMenuComponent],
   imports: [
     CommonModule,
     FormsModule,

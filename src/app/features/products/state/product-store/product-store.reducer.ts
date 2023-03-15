@@ -1,21 +1,18 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
 import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
 import { IProductFilter } from '../../data/interfaces/product-filter.interface';
-import {
-  ICategory,
-  IFilterProductResponse,
-} from '../../data/interfaces/product.interface';
-import * as ProductListActions from './product-list.actions';
+import { ICategory, IProduct } from '../../data/interfaces/product.interface';
+import * as ProductListActions from './product-store.actions';
 
-export interface ProductListState {
-  products: INGRXData<IFilterProductResponse[]>;
+export interface ProductStoreState {
+  product: INGRXData<IProduct>;
   categories: INGRXData<ICategory[]>;
   filter: IProductFilter;
 }
 
 export const productListFeatureKey = 'product-list';
 
-const initialState: ProductListState = {
+const initialState: ProductStoreState = {
   products: {
     data: undefined,
     error: undefined,
@@ -32,7 +29,7 @@ const initialState: ProductListState = {
   },
 };
 
-export const reducer: ActionReducer<ProductListState, Action> = createReducer(
+export const reducer: ActionReducer<ProductStoreState, Action> = createReducer(
   initialState,
   on(ProductListActions.fetchProducts, state => {
     return {

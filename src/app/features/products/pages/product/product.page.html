@@ -1,0 +1,23 @@
+<app-navbar></app-navbar>
+<section *ngIf="{ product: (product$ | async) } as data" class="ivs">
+  <div class="container vs-1">
+    <div *ngIf="!data.product?.isLoading" class="row">
+      <div class="col-12 col-lg-6">
+        <app-file-preview
+          [fileProps]="{
+            urls: imageUrls,
+            previewOnly: true
+          }"></app-file-preview>
+      </div>
+      <div class="product-content col-12 col-lg-6">
+        <h3 class="product-content__title">Anel de prata</h3>
+        <p class="product-content__topic text-regular">Tópico 1</p>
+        <p class="product-content__topic text-regular">Tópico 2</p>
+        <p class="product-content__topic text-regular m-0">Tópico 3</p>
+        <p class="product-content__price">R$ 199,90</p>
+        <p class="product-content__sizes">Tamanhos disponíveis: 18, 19, 20</p>
+      </div>
+    </div>
+    <app-loader *ngIf="data.product?.isLoading"></app-loader>
+  </div>
+</section>

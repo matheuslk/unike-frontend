@@ -6,9 +6,9 @@ import {
   IFilterProductResponse,
 } from '../../data/interfaces/product.interface';
 
-export const fetchProducts = createAction(
+export const storeProduct = createAction(
   '[Product - List] Fetch Products',
-  props<{ filter: IProductFilter }>()
+  props<{ body: IProductFilter }>()
 );
 
 export const fetchProductsSuccess = createAction(

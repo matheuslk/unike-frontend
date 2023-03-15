@@ -1,14 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSelectionListChange } from '@angular/material/list';
 import { Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { map, take, takeUntil, tap } from 'rxjs/operators';
+import { merge, Observable, Subject } from 'rxjs';
+import { filter, map, skip, take, takeUntil } from 'rxjs/operators';
+import { ERROR_MESSAGES } from 'src/app/core/data/enums/error-messages.enum';
 import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
 import { ScreenSizeObserverService } from 'src/app/core/services/screen-size-observer.service';
 import { SidenavService } from 'src/app/core/services/sidenav.service';
-import { ICategory } from '../../data/interfaces/category.interface';
 import { IProductFilter } from '../../data/interfaces/product-filter.interface';
-import { IFetchProductsResponse } from '../../data/interfaces/product.interface';
+import {
+  ICategory,
+  IFilterProductResponse,
+} from '../../data/interfaces/product.interface';
 import { ProductListFacade } from '../../state/product-list/product-list.facade';
 
 @Component({
@@ -20,9 +23,11 @@ export class ProductListComponent implements OnInit, OnDestroy {
   viewDestroyed$!: Subject<void>;
   currentScreenSize$!: Observable<number>;
 
-  products$!: Observable<INGRXData<IFetchProductsResponse[]>>;
+  products$!: Observable<INGRXData<IFilterProductResponse[]>>;
   categories$!: Observable<INGRXData<ICategory[]>>;
   filter$!: Observable<IProductFilter>;
+
+  productErrorMessage?: string;
 
   constructor(
     private screenSizeObserverService: ScreenSizeObserverService,
@@ -34,12 +39,13 @@ export class ProductListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initData();
     this.setListeners();
+    //IMPLEMENTAR LOAD DATA PARA VOLTAR COMO ERA ANTES -> CONTROLAR SCROLL DA TELA
     this.fetchData();
   }
 
   ngOnDestroy(): void {
     this.viewDestroyed$.next();
-    this.viewDestroyed$.unsubscribe();
+    this.viewDestroyed$.complete();
   }
 
   initData(): void {
@@ -59,17 +65,29 @@ export class ProductListComponent implements OnInit, OnDestroy {
   }
 
   setListeners(): void {
+    this.setProductsListener();
     this.setProductFilterListener();
   }
 
+  setProductsListener(): void {
+    this.products$.subscribe(products => {
+      this.productErrorMessage = products.error
+        ? products.error.message
+        : products.data?.length === 0
+        ? ERROR_MESSAGES.EMPTY_LIST
+        : '';
+    });
+  }
+
   setProductFilterListener(): void {
-    this.filter$.subscribe(filter => {
+    this.filter$.pipe(skip(1)).subscribe(filter => {
       this.productListFacade.fetchProducts(filter);
     });
   }
 
   fetchData(): void {
     this.productListFacade.fetchCategories();
+    this.productListFacade.fetchProducts({});
   }
 
   handleFilterOnChange(event: MatSelectionListChange): void {
@@ -87,6 +105,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   showFilterSidenav(): void {
     this.sidenavService.toggleProductFilterSidenav();
+  }
+
+  redirectToProduct(id: number): void {
+    this.router.navigateByUrl(`/products/${id}`);
   }
 
   redirectToProductStore(): void {

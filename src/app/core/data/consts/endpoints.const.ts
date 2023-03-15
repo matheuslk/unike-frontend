@@ -8,8 +8,10 @@ export const endpoints = {
     login: `${environment.apiUrl}/login`,
     refresh: `${environment.apiUrl}/refresh`,
     products: {
+      find: `${environment.apiUrl}/products`,
       filter: `${environment.apiUrl}/products/filter`,
       categories: `${environment.apiUrl}/products/categories`,
+      image: `${environment.apiBaseUrl}/uploads`,
     },
   },
 };

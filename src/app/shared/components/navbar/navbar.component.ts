@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { debounceTime, Observable, Subject, takeUntil } from 'rxjs';
-import { SidenavService } from 'src/app/core/services/sidenav.service';
-import { AuthFacade } from 'src/app/core/state/auth/auth.facade';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ProductListFacade } from 'src/app/features/products/state/product-list/product-list.facade';
 
 @Component({
@@ -13,11 +11,9 @@ import { ProductListFacade } from 'src/app/features/products/state/product-list/
 })
 export class NavbarComponent implements OnInit {
   viewDestroyed$!: Subject<void>;
-  isAuthenticated$!: Observable<boolean | undefined>;
   searchControl!: FormControl;
+  showSearchInput!: boolean;
   constructor(
-    private sidenavService: SidenavService,
-    private authFacade: AuthFacade,
     private productListFacade: ProductListFacade,
     private router: Router
   ) {}
@@ -29,7 +25,7 @@ export class NavbarComponent implements OnInit {
 
   initData(): void {
     this.viewDestroyed$ = new Subject();
-    this.isAuthenticated$ = this.authFacade.selectIsAuthenticated$();
+    this.showSearchInput = this.router.url === '/home' ? true : false;
     this.searchControl = new FormControl('');
   }
 
@@ -43,17 +39,5 @@ export class NavbarComponent implements OnInit {
       .subscribe((search: string) => {
         this.productListFacade.setProductFilter({ name: search });
       });
-  }
-
-  showSidenav(): void {
-    this.sidenavService.toggleMenuSidenav();
-  }
-
-  redirectToHome(): void {
-    this.router.navigateByUrl('/home');
-  }
-
-  redirectToLogin(): void {
-    this.router.navigateByUrl('/login');
   }
 }
