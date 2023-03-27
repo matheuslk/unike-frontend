@@ -1,16 +1,16 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
 import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
-import { IProductFilter } from '../../data/interfaces/product-filter.interface';
 import {
-  ICategory,
-  IFilterProductResponse,
-} from '../../data/interfaces/product.interface';
+  ISearchFilters,
+  IFiltersResponse,
+} from '../../data/interfaces/product-filter.interface';
+import { IFilteredProductResponse } from '../../data/interfaces/product.interface';
 import * as ProductListActions from './product-list.actions';
 
 export interface ProductListState {
-  products: INGRXData<IFilterProductResponse[]>;
-  categories: INGRXData<ICategory[]>;
-  filter: IProductFilter;
+  products: INGRXData<IFilteredProductResponse[]>;
+  filters: INGRXData<IFiltersResponse>;
+  searchFilters: ISearchFilters;
 }
 
 export const productListFeatureKey = 'product-list';
@@ -21,14 +21,15 @@ const initialState: ProductListState = {
     error: undefined,
     isLoading: false,
   },
-  categories: {
+  filters: {
     data: undefined,
     error: undefined,
     isLoading: false,
   },
-  filter: {
+  searchFilters: {
     name: '',
     categories: [],
+    sizes: [],
   },
 };
 
@@ -65,44 +66,45 @@ export const reducer: ActionReducer<ProductListState, Action> = createReducer(
       },
     };
   }),
-  on(ProductListActions.fetchCategories, state => {
+  on(ProductListActions.fetchFilters, state => {
     return {
       ...state,
-      categories: {
-        ...state.categories,
+      filters: {
+        ...state.filters,
         error: undefined,
         isLoading: true,
       },
     };
   }),
-  on(ProductListActions.fetchCategoriesSuccess, (state, { categories }) => {
+  on(ProductListActions.fetchFiltersSuccess, (state, { filters }) => {
     return {
       ...state,
-      categories: {
-        ...state.categories,
-        data: categories,
+      filters: {
+        ...state.filters,
+        data: filters,
         isLoading: false,
       },
     };
   }),
-  on(ProductListActions.fetchCategoriesError, (state, { error }) => {
+  on(ProductListActions.fetchFiltersError, (state, { error }) => {
     return {
       ...state,
       categories: {
-        ...state.categories,
+        ...state.filters,
         data: undefined,
         error,
         isLoading: false,
       },
     };
   }),
-  on(ProductListActions.setProductFilter, (state, { filter }) => {
+  on(ProductListActions.setSearchFilters, (state, { filters }) => {
     return {
       ...state,
-      filter: {
-        ...state.filter,
-        name: filter.name ?? state.filter.name,
-        categories: filter.categories ?? state.filter.categories,
+      searchFilters: {
+        ...state.searchFilters,
+        name: filters.name ?? state.searchFilters.name,
+        categories: filters.categories ?? state.searchFilters.categories,
+        sizes: filters.sizes ?? state.searchFilters.sizes,
       },
     };
   })

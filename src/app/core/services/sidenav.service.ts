@@ -5,8 +5,8 @@ import { MatSidenav } from '@angular/material/sidenav';
   providedIn: 'root',
 })
 export class SidenavService {
-  menuSidenav!: MatSidenav;
-  productFilterSidenav!: MatSidenav;
+  private menuSidenav!: MatSidenav;
+  private productFilterSidenav!: MatSidenav;
   constructor() {}
 
   setMenuSidenav(sidenav: MatSidenav): void {
@@ -23,5 +23,9 @@ export class SidenavService {
 
   toggleProductFilterSidenav(): void {
     this.productFilterSidenav.toggle();
+  }
+
+  getIsProductFilterSidenavOpened(): boolean {
+    return this.productFilterSidenav.opened;
   }
 }

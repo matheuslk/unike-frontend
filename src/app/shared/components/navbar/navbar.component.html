@@ -4,15 +4,12 @@
       class="navbar__search align-items-center flex-wrap flex-sm-nowrap justify-content-between">
       <app-navbar-logo class="navbar__search__logo"></app-navbar-logo>
       <mat-form-field
+        *ngIf="showSearchInput"
         appearance="outline"
         class="navbar__search__input"
-        *ngIf="showSearchInput"
         floatLabel="never">
         <mat-label>Pesquisar</mat-label>
         <input [formControl]="searchControl" matInput type="text" />
-        <button mat-icon-button matSuffix>
-          <mat-icon>search</mat-icon>
-        </button>
       </mat-form-field>
       <app-navbar-menu class="navbar__search__menu"></app-navbar-menu>
     </mat-toolbar-row>

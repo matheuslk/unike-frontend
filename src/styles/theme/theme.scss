@@ -1,7 +1,7 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
-@use './typography' as typography;
-@use './components/navbar/navbar-theme' as navbar;
+@use './utils/typography' as typography;
+@use './components/navbar-theme' as navbar;
 
 @include mat.core();
 

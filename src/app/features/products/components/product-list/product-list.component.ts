@@ -1,17 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatSelectionListChange } from '@angular/material/list';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatSelectionList } from '@angular/material/list';
 import { Router } from '@angular/router';
-import { merge, Observable, Subject } from 'rxjs';
-import { filter, map, skip, take, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, merge } from 'rxjs';
+import { skip, take, takeUntil } from 'rxjs/operators';
 import { ERROR_MESSAGES } from 'src/app/core/data/enums/error-messages.enum';
 import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
-import { ScreenSizeObserverService } from 'src/app/core/services/screen-size-observer.service';
 import { SidenavService } from 'src/app/core/services/sidenav.service';
-import { IProductFilter } from '../../data/interfaces/product-filter.interface';
 import {
-  ICategory,
-  IFilterProductResponse,
-} from '../../data/interfaces/product.interface';
+  IFiltersResponse,
+  ISearchFilters,
+} from '../../data/interfaces/product-filter.interface';
+import { IFilteredProductResponse } from '../../data/interfaces/product.interface';
 import { ProductListFacade } from '../../state/product-list/product-list.facade';
 
 @Component({
@@ -21,16 +20,19 @@ import { ProductListFacade } from '../../state/product-list/product-list.facade'
 })
 export class ProductListComponent implements OnInit, OnDestroy {
   viewDestroyed$!: Subject<void>;
-  currentScreenSize$!: Observable<number>;
 
-  products$!: Observable<INGRXData<IFilterProductResponse[]>>;
-  categories$!: Observable<INGRXData<ICategory[]>>;
-  filter$!: Observable<IProductFilter>;
+  products$!: Observable<INGRXData<IFilteredProductResponse[]>>;
+  filters$!: Observable<INGRXData<IFiltersResponse>>;
+  searchFilters$!: Observable<ISearchFilters>;
 
-  productErrorMessage?: string;
+  productsErrorMessage?: string;
+
+  @ViewChild('categoriesFilterList')
+  categoriesFilterList!: MatSelectionList;
+  @ViewChild('sizesFilterList')
+  sizesFilterList!: MatSelectionList;
 
   constructor(
-    private screenSizeObserverService: ScreenSizeObserverService,
     private sidenavService: SidenavService,
     private productListFacade: ProductListFacade,
     private router: Router
@@ -50,28 +52,25 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   initData(): void {
     this.viewDestroyed$ = new Subject();
-    this.currentScreenSize$ = this.screenSizeObserverService
-      .getCurrentScreenSize()
-      .pipe(takeUntil(this.viewDestroyed$));
     this.products$ = this.productListFacade
       .selectProducts$()
       .pipe(takeUntil(this.viewDestroyed$));
-    this.categories$ = this.productListFacade
-      .selectCategories$()
+    this.filters$ = this.productListFacade
+      .selectFilters$()
       .pipe(takeUntil(this.viewDestroyed$));
-    this.filter$ = this.productListFacade
-      .selectFilter$()
+    this.searchFilters$ = this.productListFacade
+      .selectSearchFilters$()
       .pipe(takeUntil(this.viewDestroyed$));
   }
 
   setListeners(): void {
-    this.setProductsListener();
-    this.setProductFilterListener();
+    this.setProductsErrorListener();
+    this.setProductSearchFiltersListener();
   }
 
-  setProductsListener(): void {
+  setProductsErrorListener(): void {
     this.products$.subscribe(products => {
-      this.productErrorMessage = products.error
+      this.productsErrorMessage = products.error
         ? products.error.message
         : products.data?.length === 0
         ? ERROR_MESSAGES.EMPTY_LIST
@@ -79,31 +78,20 @@ export class ProductListComponent implements OnInit, OnDestroy {
     });
   }
 
-  setProductFilterListener(): void {
-    this.filter$.pipe(skip(1)).subscribe(filter => {
-      this.productListFacade.fetchProducts(filter);
-    });
+  setProductSearchFiltersListener(): void {
+    merge(this.searchFilters$.pipe(take(1)), this.searchFilters$.pipe(skip(1)))
+      .pipe(takeUntil(this.viewDestroyed$))
+      .subscribe(filters => {
+        console.log(`PRODUCT LIST - SEARCH FILTERS`);
+        this.productListFacade.fetchProducts(filters);
+      });
   }
 
   fetchData(): void {
-    this.productListFacade.fetchCategories();
-    this.productListFacade.fetchProducts({});
+    this.productListFacade.fetchFilters();
   }
 
-  handleFilterOnChange(event: MatSelectionListChange): void {
-    this.productListFacade.setProductFilter({
-      categories: event.source._value ?? [],
-    });
-  }
-
-  shouldShowFilterSidenav(): Observable<boolean> {
-    return this.currentScreenSize$.pipe(
-      map(screenSize => screenSize < 992),
-      take(1)
-    );
-  }
-
-  showFilterSidenav(): void {
+  showSearchFilterSidenav(): void {
     this.sidenavService.toggleProductFilterSidenav();
   }
 

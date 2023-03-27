@@ -2,17 +2,6 @@
 @import '../../../../../../node_modules/bootstrap/scss/variables';
 @import '../../../../../../node_modules/bootstrap/scss/mixins/breakpoints';
 .container {
-  .filter-card {
-    position: sticky;
-    // MEDIDA TOP NECESSÁRIA PARA O FILTER CARD NAO SER "ENGOLIDO" PELO NAVBAR
-    top: 80px;
-    &__content {
-      text-transform: capitalize;
-    }
-    &__title {
-      font-size: 18px;
-    }
-  }
   .products {
     .row > * {
       margin-bottom: 1rem;

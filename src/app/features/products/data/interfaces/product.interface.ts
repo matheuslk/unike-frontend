@@ -24,12 +24,12 @@ export interface IProduct {
   category_id: number;
 }
 
-export interface IFilterProductResponse extends IProduct {
-  images: IImage[];
-}
-
-export interface IFindProductResponse extends IProduct {
+export interface IProductResponse extends IProduct {
   category: ICategory;
   images: IImage[];
   sizes: ISize[];
+}
+
+export interface IFilteredProductResponse extends IProduct {
+  images: IImage[];
 }

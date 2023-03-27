@@ -5,9 +5,9 @@
 }
 
 .product-filter-sidenav {
-  &__filter {
-    span {
-      font-size: 18px;
+  .filter-card {
+    &__content {
+      text-transform: capitalize;
     }
   }
 }

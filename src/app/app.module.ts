@@ -1,6 +1,7 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -30,6 +31,7 @@ import { HomeModule } from './features/home/home.module';
     HomeModule,
     NgbModule,
     MatSidenavModule,
+    MatCardModule,
     MatListModule,
     MatButtonModule,
     MatIconModule,

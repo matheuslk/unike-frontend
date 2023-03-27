@@ -1,19 +1,19 @@
 import { createAction, props } from '@ngrx/store';
 import { HttpError } from 'src/app/core/data/models/http-error.model';
-import { IProductFilter } from '../../data/interfaces/product-filter.interface';
 import {
-  ICategory,
-  IFilterProductResponse,
-} from '../../data/interfaces/product.interface';
+  IFiltersResponse,
+  ISearchFilters,
+} from '../../data/interfaces/product-filter.interface';
+import { IFilteredProductResponse } from '../../data/interfaces/product.interface';
 
 export const fetchProducts = createAction(
   '[Product - List] Fetch Products',
-  props<{ filter: IProductFilter }>()
+  props<{ filters: ISearchFilters }>()
 );
 
 export const fetchProductsSuccess = createAction(
   '[Product - List] Fetch Products Success',
-  props<{ products: IFilterProductResponse[] }>()
+  props<{ products: IFilteredProductResponse[] }>()
 );
 
 export const fetchProductsError = createAction(
@@ -21,21 +21,19 @@ export const fetchProductsError = createAction(
   props<{ error: HttpError }>()
 );
 
-export const fetchCategories = createAction(
-  '[Product - List] Fetch Categories'
+export const fetchFilters = createAction('[Product - List] Fetch Filters');
+
+export const fetchFiltersSuccess = createAction(
+  '[Product - List] Fetch Filters Success',
+  props<{ filters: IFiltersResponse }>()
 );
 
-export const fetchCategoriesSuccess = createAction(
-  '[Product - List] Fetch Categories Success',
-  props<{ categories: ICategory[] }>()
-);
-
-export const fetchCategoriesError = createAction(
-  '[Product - List] Fetch Categories Error',
+export const fetchFiltersError = createAction(
+  '[Product - List] Fetch Filters Error',
   props<{ error: HttpError }>()
 );
 
-export const setProductFilter = createAction(
-  '[Product - List] Set Product Filter',
-  props<{ filter: IProductFilter }>()
+export const setSearchFilters = createAction(
+  '[Product - List] Set Search Filters',
+  props<{ filters: Partial<ISearchFilters> }>()
 );

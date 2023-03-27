@@ -75,22 +75,48 @@
     </div>
   </mat-sidenav>
   <mat-sidenav
+    *ngIf="{
+      filters: (productFilters$ | async)
+    } as data"
     #productFilterSidenav
     class="product-filter-sidenav"
     [autoFocus]="false"
     [fixedInViewport]="true"
     mode="over"
     position="start">
-    <div class="product-filter-sidenav__filter p-3">
-      <span>Filtros</span>
-      <mat-selection-list>
-        <mat-list-option
-          color="primary"
-          *ngFor="let option of ['Anel', 'Brinco', 'Pulseira']">
-          {{ option }}
-        </mat-list-option>
-      </mat-selection-list>
-    </div>
+    <mat-card class="filter-card h-100">
+      <mat-card-title class="filter-card__title text-center"
+        >Filtros</mat-card-title
+      >
+      <mat-card-content class="filter-card__content">
+        <div>
+          <p class="fw-bold mt-4 mb-0">Categorias</p>
+          <mat-selection-list
+            #categoriesFilterList
+            (selectionChange)="handleFilterOnChange($event, 'categories')">
+            <mat-list-option
+              color="primary"
+              *ngFor="let category of data.filters?.data?.categories"
+              [value]="category.id.toString()">
+              {{ category.name }}
+            </mat-list-option>
+          </mat-selection-list>
+        </div>
+        <div *ngIf="showProductFilterSizes">
+          <p class="fw-bold mt-4 mb-0">Tamanhos</p>
+          <mat-selection-list
+            #sizesFilterList
+            (selectionChange)="handleFilterOnChange($event, 'sizes')">
+            <mat-list-option
+              color="primary"
+              *ngFor="let size of data.filters?.data?.sizes"
+              [value]="size.size">
+              {{ size.size }}
+            </mat-list-option>
+          </mat-selection-list>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </mat-sidenav>
   <router-outlet></router-outlet>
 </mat-sidenav-container>

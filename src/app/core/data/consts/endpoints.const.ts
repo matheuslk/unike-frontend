@@ -10,7 +10,7 @@ export const endpoints = {
     products: {
       find: `${environment.apiUrl}/products`,
       filter: `${environment.apiUrl}/products/filter`,
-      categories: `${environment.apiUrl}/products/categories`,
+      filters: `${environment.apiUrl}/products/filters`,
       image: `${environment.apiBaseUrl}/uploads`,
     },
   },

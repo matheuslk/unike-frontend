@@ -1,78 +1,46 @@
 <main
   *ngIf="{
     products: (products$ | async),
-    categories: (categories$ | async)
+    filters: (filters$ | async)
   } as data">
   <div class="container vs-3">
-    <div class="row mb-4">
-      <div
-        class="d-flex align-items-center justify-content-sm-start col-12 col-sm-6">
-        <h3 class="m-0">Nossos produtos</h3>
-      </div>
-      <div
-        class="d-flex align-items-center justify-content-end col-12 col-sm-6">
+    <div
+      class="d-flex align-items-center justify-content-between mb-4 flex-wrap">
+      <h3 class="me-2 mb-0">Nossos produtos</h3>
+      <div class="d-flex align-items-center justify-content-end my-3">
         <button
+          [disabled]="data.filters?.isLoading || data.filters?.error"
+          (click)="showSearchFilterSidenav()"
+          mat-mini-fab
+          aria-label="Botão com ícone de menu">
+          <mat-icon>filter_list</mat-icon>
+        </button>
+        <button
+          class="ms-3"
           (click)="redirectToProductStore()"
           mat-mini-fab
           aria-label="Botão com ícone adição">
           <mat-icon>add</mat-icon>
         </button>
-        <button
-          [disabled]="data.categories?.isLoading || data.categories?.error"
-          class="d-inline-block d-lg-none ms-3"
-          (click)="showFilterSidenav()"
-          mat-mini-fab
-          aria-label="Botão com ícone de menu">
-          <mat-icon>filter_list</mat-icon>
-        </button>
       </div>
     </div>
     <div
-      *ngIf="!data.categories?.isLoading && !data.categories?.error"
-      class="row">
+      *ngIf="!data.products?.isLoading && !data.products?.error"
+      class="products row">
       <div
-        *ngIf="(shouldShowFilterSidenav() | async) === false"
-        class="col-lg-3">
-        <mat-card class="filter-card">
-          <mat-card-title class="filter-card__title">Filtros</mat-card-title>
-          <mat-card-content class="filter-card__content">
-            <mat-selection-list
-              #filterList
-              (selectionChange)="handleFilterOnChange($event)">
-              <mat-list-option
-                color="primary"
-                *ngFor="let option of data.categories?.data"
-                [value]="option.id.toString()">
-                {{ option.name }}
-              </mat-list-option>
-            </mat-selection-list>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div class="products col-12 col-lg-9">
-        <div
-          *ngIf="!data.products?.isLoading && !data.products?.error"
-          class="row">
-          <div
-            *ngFor="let product of data.products?.data"
-            class="col-12 col-md-6 col-xl-4">
-            <app-product-card
-              (click)="redirectToProduct(product.id)"
-              [product]="product"
-              class="products__card"></app-product-card>
-          </div>
-        </div>
-        <app-loader *ngIf="data.products?.isLoading"></app-loader>
-        <p
-          *ngIf="!data.products?.isLoading && productErrorMessage"
-          class="text-center">
-          {{ productErrorMessage }}
-        </p>
+        *ngFor="let product of data.products?.data"
+        class="col-12 col-md-6 col-xl-4">
+        <app-product-card
+          (click)="redirectToProduct(product.id)"
+          [product]="product"
+          class="products__card"></app-product-card>
       </div>
     </div>
-    <app-loader *ngIf="data.categories?.isLoading"></app-loader>
-    <p *ngIf="data.categories?.error" class="text-center">
-      {{ data.categories?.error?.message }}
+    <app-loader *ngIf="data.products?.isLoading"></app-loader>
+    <p
+      *ngIf="!data.products?.isLoading && productsErrorMessage"
+      class="text-center">
+      {{ productsErrorMessage }}
     </p>
   </div>
 </main>

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject } from 'rxjs';
+import { distinctUntilChanged, skip, takeUntil, tap } from 'rxjs/operators';
 import { ProductListFacade } from 'src/app/features/products/state/product-list/product-list.facade';
 
 @Component({
@@ -9,7 +10,7 @@ import { ProductListFacade } from 'src/app/features/products/state/product-list/
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   viewDestroyed$!: Subject<void>;
   searchControl!: FormControl;
   showSearchInput!: boolean;
@@ -23,6 +24,11 @@ export class NavbarComponent implements OnInit {
     this.setListeners();
   }
 
+  ngOnDestroy(): void {
+    this.viewDestroyed$.next();
+    this.viewDestroyed$.complete();
+  }
+
   initData(): void {
     this.viewDestroyed$ = new Subject();
     this.showSearchInput = this.router.url === '/home' ? true : false;
@@ -30,14 +36,36 @@ export class NavbarComponent implements OnInit {
   }
 
   setListeners(): void {
+    this.setProductFiltersErrorListener();
     this.setSearchListener();
+  }
+
+  setProductFiltersErrorListener(): void {
+    if (!this.showSearchInput) {
+      return;
+    }
+    this.productListFacade
+      .selectFilters$()
+      .pipe(takeUntil(this.viewDestroyed$))
+      .subscribe(filters => {
+        filters.error || filters.isLoading
+          ? this.searchControl.disable()
+          : this.searchControl.enable();
+      });
   }
 
   setSearchListener(): void {
     this.searchControl.valueChanges
-      .pipe(debounceTime(300), takeUntil(this.viewDestroyed$))
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged(),
+        skip(1),
+        takeUntil(this.viewDestroyed$)
+      )
       .subscribe((search: string) => {
-        this.productListFacade.setProductFilter({ name: search });
+        this.productListFacade.setSearchFilters({
+          name: search,
+        });
       });
   }
 }

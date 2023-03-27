@@ -1,10 +1,10 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
-import { IProductFilter } from '../../data/interfaces/product-filter.interface';
 import {
-  ICategory,
-  IFilterProductResponse,
-} from '../../data/interfaces/product.interface';
+  IFiltersResponse,
+  ISearchFilters,
+} from '../../data/interfaces/product-filter.interface';
+import { IFilteredProductResponse } from '../../data/interfaces/product.interface';
 import {
   productListFeatureKey,
   ProductListState,
@@ -16,16 +16,16 @@ export const selectProductListState = createFeatureSelector<ProductListState>(
 
 export const selectProducts = createSelector(
   selectProductListState,
-  (state: ProductListState): INGRXData<IFilterProductResponse[]> =>
+  (state: ProductListState): INGRXData<IFilteredProductResponse[]> =>
     state.products
 );
 
-export const selectCategories = createSelector(
+export const selectFilters = createSelector(
   selectProductListState,
-  (state: ProductListState): INGRXData<ICategory[]> => state.categories
+  (state: ProductListState): INGRXData<IFiltersResponse> => state.filters
 );
 
-export const selectFilter = createSelector(
+export const selectSearchFilters = createSelector(
   selectProductListState,
-  (state: ProductListState): IProductFilter => state.filter
+  (state: ProductListState): ISearchFilters => state.searchFilters
 );

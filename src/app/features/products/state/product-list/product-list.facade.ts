@@ -3,11 +3,11 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
 
-import { IProductFilter } from '../../data/interfaces/product-filter.interface';
 import {
-  ICategory,
-  IFilterProductResponse,
-} from '../../data/interfaces/product.interface';
+  ISearchFilters,
+  IFiltersResponse,
+} from '../../data/interfaces/product-filter.interface';
+import { IFilteredProductResponse } from '../../data/interfaces/product.interface';
 
 import * as ProductListActions from './product-list.actions';
 import * as ProductListSelectors from './product-list.selectors';
@@ -16,27 +16,27 @@ import * as ProductListSelectors from './product-list.selectors';
 export class ProductListFacade {
   constructor(private store: Store) {}
 
-  fetchProducts(filter: IProductFilter): void {
-    this.store.dispatch(ProductListActions.fetchProducts({ filter }));
+  fetchProducts(filters: ISearchFilters): void {
+    this.store.dispatch(ProductListActions.fetchProducts({ filters }));
   }
 
-  fetchCategories(): void {
-    this.store.dispatch(ProductListActions.fetchCategories());
+  fetchFilters(): void {
+    this.store.dispatch(ProductListActions.fetchFilters());
   }
 
-  setProductFilter(filter: IProductFilter): void {
-    this.store.dispatch(ProductListActions.setProductFilter({ filter }));
+  setSearchFilters(filters: Partial<ISearchFilters>): void {
+    this.store.dispatch(ProductListActions.setSearchFilters({ filters }));
   }
 
-  selectProducts$(): Observable<INGRXData<IFilterProductResponse[]>> {
+  selectProducts$(): Observable<INGRXData<IFilteredProductResponse[]>> {
     return this.store.select(ProductListSelectors.selectProducts);
   }
 
-  selectCategories$(): Observable<INGRXData<ICategory[]>> {
-    return this.store.select(ProductListSelectors.selectCategories);
+  selectFilters$(): Observable<INGRXData<IFiltersResponse>> {
+    return this.store.select(ProductListSelectors.selectFilters);
   }
 
-  selectFilter$(): Observable<IProductFilter> {
-    return this.store.select(ProductListSelectors.selectFilter);
+  selectSearchFilters$(): Observable<ISearchFilters> {
+    return this.store.select(ProductListSelectors.selectSearchFilters);
   }
 }

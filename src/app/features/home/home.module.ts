@@ -20,12 +20,12 @@ const components = [ServicesComponent, ServiceCardComponent];
   declarations: [...pages, ...components],
   imports: [
     CommonModule,
+    ProductsModule,
     MatCardModule,
     MatIconModule,
     MatButtonModule,
     HomeRoutingModule,
     SharedModule,
-    ProductsModule,
   ],
 })
 export class HomeModule {}

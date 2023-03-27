@@ -16,8 +16,8 @@ export class ProductListEffects {
   fetchProducts$ = createEffect(() =>
     this.actions$.pipe(
       ofType(ProductListActions.fetchProducts),
-      switchMap(({ filter }) => {
-        return this.productService.filter(filter).pipe(
+      switchMap(({ filters }) => {
+        return this.productService.filter(filters).pipe(
           switchMap(products =>
             of(ProductListActions.fetchProductsSuccess({ products }))
           ),
@@ -29,16 +29,16 @@ export class ProductListEffects {
     )
   );
 
-  fetchCategories$ = createEffect(() =>
+  fetchFilters$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(ProductListActions.fetchCategories),
+      ofType(ProductListActions.fetchFilters),
       switchMap(() => {
-        return this.productService.fetchCategories().pipe(
-          switchMap(categories =>
-            of(ProductListActions.fetchCategoriesSuccess({ categories }))
+        return this.productService.fetchFilters().pipe(
+          switchMap(filters =>
+            of(ProductListActions.fetchFiltersSuccess({ filters }))
           ),
           catchError((error: HttpError) =>
-            of(ProductListActions.fetchCategoriesError({ error }))
+            of(ProductListActions.fetchFiltersError({ error }))
           )
         );
       })

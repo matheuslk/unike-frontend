@@ -1,10 +1,10 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
 import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
-import { IFindProductResponse } from '../../data/interfaces/product.interface';
+import { IProductResponse } from '../../data/interfaces/product.interface';
 import * as ProductListActions from './product.actions';
 
 export interface ProductState {
-  product: INGRXData<IFindProductResponse>;
+  product: INGRXData<IProductResponse>;
 }
 
 export const productFeatureKey = 'product-find';

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { endpoints } from 'src/app/core/data/consts/endpoints.const';
-import { IFilterProductResponse } from '../../data/interfaces/product.interface';
+import { IFilteredProductResponse } from '../../data/interfaces/product.interface';
 
 @Component({
   selector: 'app-product-card',
@@ -10,7 +10,7 @@ import { IFilterProductResponse } from '../../data/interfaces/product.interface'
 })
 export class ProductCardComponent implements OnInit {
   @Input()
-  product!: IFilterProductResponse;
+  product!: IFilteredProductResponse;
   productImageUrl!: SafeUrl;
   constructor(private sanitize: DomSanitizer) {}
 
