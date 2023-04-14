@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
-import { FileInputComponent } from '../file-input/file-input.component';
+import { FileInputComponent } from './file-input/file-input.component';
 
 interface IFileProps {
   urls?: string[];
@@ -28,9 +28,10 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
   currentIndex$!: BehaviorSubject<number>;
   currentImageUrl$!: BehaviorSubject<string>;
 
-  productFiles!: File[];
+  productImageFiles!: File[];
   productImageUrls!: string[];
 
+  @Input() disabled: boolean = false;
   @Input() fileProps!: IFileProps;
   @Output() emitFiles = new EventEmitter<File[]>();
 
@@ -61,10 +62,13 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
     if (this.fileProps.previewOnly) {
       return;
     }
-    this.productFiles = this.fileProps.files ?? [];
-    this.productFiles.length
-      ? this.generateImageUrlsFromFiles()
-      : this.addDefaultImageUrl();
+    this.productImageFiles = this.fileProps.files ?? [];
+    if (this.productImageFiles.length) {
+      this.generateImageUrlsFromFiles(this.productImageFiles);
+      return;
+    }
+    this.productImageUrls.push(this.defaultProductImageUrl);
+    this.currentIndex$.next(this.productImageUrls.length - 1);
   }
 
   setListeners(): void {
@@ -75,54 +79,53 @@ export class FilePreviewComponent implements OnInit, OnDestroy {
     this.currentIndex$
       .pipe(takeUntil(this.viewDestroyed$))
       .subscribe(currentIndex => {
-        console.log('FILE PREVIEW - CURRENT INDEX LISTENER', currentIndex);
-        this.currentImageUrl$.next(
-          this.productImageUrls ? this.productImageUrls[currentIndex] : ''
-        );
+        this.currentImageUrl$.next(this.productImageUrls[currentIndex]);
       });
+  }
+
+  handleSmallImageOnClick(index: number): void {
+    if (this.disabled) {
+      return;
+    }
+    this.currentIndex$.next(index);
   }
 
   //FILE UPLOAD METHODS
 
-  addDefaultImageUrl(): void {
-    console.log('FILE PREVIEW - ADD DEFAULT IMAGE');
-    this.productImageUrls.push(this.defaultProductImageUrl);
-    this.currentIndex$.next(this.productImageUrls.length - 1);
-  }
-
-  async generateImageUrlsFromFiles(): Promise<void> {
+  async generateImageUrlsFromFiles(files: File[]): Promise<void> {
     this.productImageUrls = await Promise.all(
-      this.productFiles.map(async file => await this.generateFileUrl(file))
+      files.map(async file => await this.generateFileUrl(file))
     );
   }
 
   openFileInput(): void {
-    if (this.fileProps.previewOnly) {
+    if (this.fileProps.previewOnly || this.disabled) {
       return;
     }
     this.fileInput.open();
   }
 
-  async handleNewFile(file: File): Promise<void> {
-    console.log('HANDLE NEW FILE');
-    // const index = this.currentIndex$.getValue();
+  async handleNewFiles(files: File[]): Promise<void> {
+    this.productImageUrls = await Promise.all(
+      files.map(async file => await this.generateFileUrl(file))
+    );
+    this.currentIndex$.next(this.productImageUrls.length - 1);
 
-    // const imageUrl = await this.generateFileUrl(file);
-    // this.imageUrls?[index] = imageUrl;
-    // this.currentIndex$.next(index);
-
-    // this.files[index] = file;
-    // this.emitFiles.next(this.files);
+    this.productImageFiles = files;
+    this.emitFiles.next(files);
   }
 
   removeFile(): void {
-    console.log('REMOVE FILE');
-    // const index = this.currentIndex$.getValue();
-    // this.imageUrls.splice(index, 1);
-    // this.currentIndex$.next(index > 0 ? index - 1 : index);
+    const index = this.currentIndex$.getValue();
+    if (this.productImageUrls.length === 1) {
+      this.productImageUrls[0] = this.defaultProductImageUrl;
+    } else {
+      this.productImageUrls.splice(index, 1);
+    }
+    this.currentIndex$.next(index > 0 ? index - 1 : index);
 
-    // this.files.splice(index, 1);
-    // this.emitFiles.next(this.files);
+    this.productImageFiles.splice(index, 1);
+    this.emitFiles.next(this.productImageFiles);
   }
 
   async generateFileUrl(file: File): Promise<string> {

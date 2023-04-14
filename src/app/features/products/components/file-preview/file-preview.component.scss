@@ -3,7 +3,6 @@
 @import '../../../../../../node_modules/bootstrap/scss/mixins/breakpoints';
 
 .preview-image-card {
-  cursor: pointer;
   img {
     max-width: 100%;
     height: auto;
@@ -13,14 +12,20 @@
 .preview-images-container {
   &__small-image {
     box-shadow: none;
-    cursor: pointer;
     img {
       width: 100%;
       height: auto;
     }
   }
+  &__small-image.disabled {
+    opacity: 0.5;
+  }
   .selected {
     box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2),
       0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
   }
+}
+
+.enabled {
+  cursor: pointer;
 }

@@ -1,39 +1,39 @@
 <div class="mb-4">
-  <mat-card (click)="openFileInput()" class="preview-image-card">
+  <mat-card
+    (click)="openFileInput()"
+    [ngClass]="disabled ? '' : 'enabled'"
+    class="preview-image-card">
     <img
       class="m-0"
       mat-card-image
       [src]="currentImageUrl$.getValue()"
       alt="Imagem do produto" />
   </mat-card>
-  <!-- <div *ngIf="!productImagesProps.previewOnly" class="py-4">
+  <div class="mt-3" *ngIf="!fileProps.previewOnly">
     <button
-      (click)="addDefaultImage()"
-      [disabled]="files[files.length - 1].defaultImage === false"
-      class="me-2"
-      mat-raised-button
-      color="primary">
-      Adicionar imagem
-    </button>
-    <button
+      [disabled]="!productImageFiles.length || disabled"
       (click)="removeFile()"
-      [disabled]="imageUrls.length === 1"
       mat-raised-button
       color="primary">
       Remover imagem
     </button>
-  </div> -->
-  <div class="row flex-nowrap preview-images-container w-100 m-0 py-2">
+  </div>
+  <div class="row flex-nowrap preview-images-container w-100 m-0 mt-3">
     <div
       class="preview-images-container__small-image col-3 col-sm-2 p-0"
       *ngFor="let url of productImageUrls; let i = index"
-      (click)="currentIndex$.next(i)"
-      [ngClass]="{ selected: currentIndex$.getValue() === i }">
+      (click)="handleSmallImageOnClick(i)"
+      [ngClass]="{
+        selected: currentIndex$.getValue() === i,
+        enabled: !disabled,
+        disabled: disabled
+      }">
       <img class="mb-0" [src]="url" [alt]="'Imagem ' + i + ' do produto'" />
     </div>
   </div>
+
   <app-file-input
     *ngIf="!fileProps.previewOnly"
     #fileInput
-    (emitFile)="handleNewFile($event)"></app-file-input>
+    (emitFile)="handleNewFiles($event)"></app-file-input>
 </div>
