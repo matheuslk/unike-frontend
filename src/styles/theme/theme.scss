@@ -1,13 +1,14 @@
 @use 'sass:map';
 @use '@angular/material' as mat;
 @use './utils/typography' as typography;
-@use './components/navbar-theme' as navbar;
+@use './components/mat-drawer.theme' as mat-drawer-container;
+@use './components/navbar.theme' as navbar;
+@use './components/form-error.theme.scss' as form-error;
 
 @include mat.core();
 
 $primary-palette: mat.define-palette(mat.$grey-palette, 900);
-$accent-palette: mat.define-palette(mat.$grey-palette, A100);
-
+$accent-palette: mat.define-palette(mat.$grey-palette, 100);
 $custom-theme: mat.define-light-theme(
   (
     color: (
@@ -24,5 +25,9 @@ $custom-theme: mat.define-light-theme(
 
 //Custom Typography Classes
 @include typography.theme($custom-theme);
+//Custom Mat Drawer Container Theme
+@include mat-drawer-container.theme($custom-theme);
 //Custom Navbar Theme
 @include navbar.theme($custom-theme);
+//Custom Form Error Component Theme
+@include form-error.theme($custom-theme);
