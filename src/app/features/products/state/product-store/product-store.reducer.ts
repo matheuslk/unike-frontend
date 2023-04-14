@@ -1,19 +1,18 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
-import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
-import { IProductFilter } from '../../data/interfaces/product-filter.interface';
 import { ICategory, IProduct } from '../../data/interfaces/product.interface';
-import * as ProductListActions from './product-store.actions';
+import * as ProductStoreActions from './product-store.actions';
+import { INGRXData } from 'src/app/shared/data/interfaces/ngrx-data.interface';
 
 export interface ProductStoreState {
   product: INGRXData<IProduct>;
   categories: INGRXData<ICategory[]>;
-  filter: IProductFilter;
+  viewDestroyed: boolean;
 }
 
-export const productListFeatureKey = 'product-list';
+export const productStoreFeatureKey = 'product-store';
 
 const initialState: ProductStoreState = {
-  products: {
+  product: {
     data: undefined,
     error: undefined,
     isLoading: false,
@@ -23,46 +22,43 @@ const initialState: ProductStoreState = {
     error: undefined,
     isLoading: false,
   },
-  filter: {
-    name: '',
-    categories: [],
-  },
+  viewDestroyed: false,
 };
 
 export const reducer: ActionReducer<ProductStoreState, Action> = createReducer(
   initialState,
-  on(ProductListActions.fetchProducts, state => {
+  on(ProductStoreActions.storeProduct, state => {
     return {
       ...state,
-      products: {
-        ...state.products,
+      product: {
+        ...state.product,
         error: undefined,
         isLoading: true,
       },
     };
   }),
-  on(ProductListActions.fetchProductsSuccess, (state, { products }) => {
+  on(ProductStoreActions.storeProductSuccess, (state, { product }) => {
     return {
       ...state,
-      products: {
-        ...state.products,
-        data: products,
+      product: {
+        ...state.product,
+        data: product,
         isLoading: false,
       },
     };
   }),
-  on(ProductListActions.fetchProductsError, (state, { error }) => {
+  on(ProductStoreActions.storeProductError, (state, { error }) => {
     return {
       ...state,
-      products: {
-        ...state.products,
+      product: {
+        ...state.product,
         data: undefined,
         error,
         isLoading: false,
       },
     };
   }),
-  on(ProductListActions.fetchCategories, state => {
+  on(ProductStoreActions.fetchCategories, state => {
     return {
       ...state,
       categories: {
@@ -72,7 +68,7 @@ export const reducer: ActionReducer<ProductStoreState, Action> = createReducer(
       },
     };
   }),
-  on(ProductListActions.fetchCategoriesSuccess, (state, { categories }) => {
+  on(ProductStoreActions.fetchCategoriesSuccess, (state, { categories }) => {
     return {
       ...state,
       categories: {
@@ -82,7 +78,7 @@ export const reducer: ActionReducer<ProductStoreState, Action> = createReducer(
       },
     };
   }),
-  on(ProductListActions.fetchCategoriesError, (state, { error }) => {
+  on(ProductStoreActions.fetchCategoriesError, (state, { error }) => {
     return {
       ...state,
       categories: {
@@ -93,14 +89,15 @@ export const reducer: ActionReducer<ProductStoreState, Action> = createReducer(
       },
     };
   }),
-  on(ProductListActions.setProductFilter, (state, { filter }) => {
+  on(ProductStoreActions.viewDestroyed, state => {
     return {
       ...state,
-      filter: {
-        ...state.filter,
-        name: filter.name ?? state.filter.name,
-        categories: filter.categories ?? state.filter.categories,
-      },
+      viewDestroyed: true,
+    };
+  }),
+  on(ProductStoreActions.resetState, () => {
+    return {
+      ...initialState,
     };
   })
 );

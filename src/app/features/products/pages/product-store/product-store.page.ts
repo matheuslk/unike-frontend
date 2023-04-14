@@ -5,10 +5,17 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { skip, takeUntil } from 'rxjs/operators';
-import { getFormErrorMessage } from 'src/app/core/data/functions/get-form-error-message.function';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { skip, takeUntil, tap } from 'rxjs/operators';
 import { PRODUCT_STORE_FORM_ERROR_MESSAGES } from '../../data/consts/form-error-messages.const';
+import {
+  ICategory,
+  IProduct,
+  IProductFormBody,
+} from '../../data/interfaces/product.interface';
+import { ProductStoreFacade } from '../../state/product-store/product-store.facade';
+import { INGRXData } from 'src/app/shared/data/interfaces/ngrx-data.interface';
+import { getFormErrorMessage } from 'src/app/shared/data/functions/get-form-error-message.function';
 
 @Component({
   selector: 'app-product-store',
@@ -17,24 +24,38 @@ import { PRODUCT_STORE_FORM_ERROR_MESSAGES } from '../../data/consts/form-error-
 })
 export class ProductStorePage implements OnInit, OnDestroy {
   viewDestroyed$!: Subject<void>;
+
   files$!: BehaviorSubject<Array<File>>;
+  categories$!: Observable<INGRXData<ICategory[]>>;
+
+  storedProduct$!: Observable<INGRXData<IProduct>>;
+
   form!: FormGroup;
 
-  constructor(private builder: FormBuilder) {}
+  constructor(
+    private builder: FormBuilder,
+    private productStoreFacade: ProductStoreFacade
+  ) {}
 
   ngOnInit(): void {
     this.initData();
     this.setListeners();
+    this.fetchData();
   }
 
   ngOnDestroy(): void {
-    this.viewDestroyed$.next();
-    this.viewDestroyed$.complete();
+    this.productStoreFacade.viewDestroyed();
   }
 
   initData(): void {
     this.viewDestroyed$ = new Subject();
     this.files$ = new BehaviorSubject<Array<File>>([]);
+    this.storedProduct$ = this.productStoreFacade
+      .selectProduct$()
+      .pipe(takeUntil(this.viewDestroyed$));
+    this.categories$ = this.productStoreFacade
+      .selectCategories$()
+      .pipe(takeUntil(this.viewDestroyed$));
     this.initForm();
   }
 
@@ -53,17 +74,49 @@ export class ProductStorePage implements OnInit, OnDestroy {
         [Validators.required, Validators.min(1), Validators.max(7000)],
       ],
       category_id: ['', [Validators.required]],
-      amount: [
-        '',
-        [Validators.required, Validators.min(1), Validators.max(50)],
-      ],
-      sizes: [[]],
       description: ['', [Validators.maxLength(255)]],
     });
   }
 
+  fetchData(): void {
+    this.fetchCategories();
+  }
+
+  fetchCategories(): void {
+    this.productStoreFacade.fetchCategories();
+  }
+
   setListeners(): void {
+    this.setViewDestroyedListener();
+    this.setStoredProductListener();
     this.setFilesListener();
+  }
+
+  setViewDestroyedListener(): void {
+    this.productStoreFacade.selectViewDestroyed$().pipe(
+      tap(() => {
+        this.viewDestroyed$.next();
+        this.viewDestroyed$.complete();
+      }),
+      takeUntil(this.viewDestroyed$)
+    );
+  }
+
+  setStoredProductListener(): void {
+    this.storedProduct$
+      .pipe(skip(1), takeUntil(this.viewDestroyed$))
+      .subscribe(product => {
+        product.isLoading ? this.form.disable() : this.form.enable();
+        if (product.data) {
+          //MOSTRAR ALERTA DE SUCESSO
+          //LIMPAR AS IMAGENS
+          this.form.reset('');
+          return;
+        }
+        if (product.error) {
+          //MOSTRAR ALERTA DE ERRO
+        }
+      });
   }
 
   setFilesListener(): void {
@@ -82,6 +135,10 @@ export class ProductStorePage implements OnInit, OnDestroy {
   }
 
   storeProduct(): void {
-    console.log('STORE PRODUCT - FORM DATA', this.form.value);
+    const body = {
+      ...this.form.value,
+      files: this.files$.getValue(),
+    } as IProductFormBody;
+    this.productStoreFacade.storeProduct(body);
   }
 }
