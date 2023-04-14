@@ -10,6 +10,5 @@
 }
 
 @mixin theme($theme) {
-  $color-config: mat.get-color-config($theme);
   @include color($theme);
 }

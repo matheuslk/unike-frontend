@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { AlertService } from 'src/app/core/services/alert.service';
+import { AlertService } from 'src/app/core/data/services/alert.service';
 
 @Component({
   selector: 'app-file-input',
@@ -17,24 +17,13 @@ import { AlertService } from 'src/app/core/services/alert.service';
 export class FileInputComponent {
   viewDestroyed$!: Subject<void>;
 
-  @Output() emitFile = new EventEmitter<File>();
+  @Output() emitFile = new EventEmitter<File[]>();
   @HostListener('change', ['$event.target.files'])
   emitFiles(fileList: FileList): void {
-    const file = fileList.item(0);
-    if (!file) {
-      this.onError('Selecione uma imagem!');
-      return;
+    const files = this.validate(fileList);
+    if (files) {
+      this.emitFile.next(files);
     }
-    if (fileList.length > 1) {
-      this.onError('Selecione no máximo 1 imagem!');
-      return;
-    }
-    if (!['image/jpg', 'image/png', 'image/jpeg'].includes(file.type)) {
-      this.onError('Imagens devem possuir um formato entre: jpg, png e jpeg.');
-      return;
-    }
-
-    this.emitFile.next(file);
     this.clearValue();
   }
   @ViewChild('fileInput') fileInput!: ElementRef;
@@ -49,8 +38,29 @@ export class FileInputComponent {
     (this.fileInput?.nativeElement as HTMLInputElement).value = '';
   }
 
+  validate(fileList: FileList): File[] | null {
+    if (fileList.length === 0) {
+      return null;
+    }
+    const files: File[] = [];
+    let hasError = true;
+    for (let fileIndex = 0; fileIndex < fileList.length; fileIndex++) {
+      const file = fileList.item(fileIndex) as File;
+      if (!['image/jpg', 'image/png', 'image/jpeg'].includes(file.type)) {
+        this.onError(
+          'Imagens devem possuir um formato entre: jpg, png e jpeg.'
+        );
+        break;
+      }
+      files.push(file);
+      if (fileIndex === fileList.length - 1) {
+        hasError = false;
+      }
+    }
+    return hasError ? null : files;
+  }
+
   onError(message: string): void {
     this.alertService.showToast('warning', message);
-    this.clearValue();
   }
 }

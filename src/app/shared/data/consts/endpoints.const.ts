@@ -8,9 +8,10 @@ export const endpoints = {
     login: `${environment.apiUrl}/login`,
     refresh: `${environment.apiUrl}/refresh`,
     products: {
+      store: `${environment.apiUrl}/products`,
       find: `${environment.apiUrl}/products`,
       filter: `${environment.apiUrl}/products/filter`,
-      filters: `${environment.apiUrl}/products/filters`,
+      categories: `${environment.apiUrl}/products/categories`,
       image: `${environment.apiBaseUrl}/uploads`,
     },
   },

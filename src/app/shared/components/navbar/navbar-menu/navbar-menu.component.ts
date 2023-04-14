@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { SidenavService } from 'src/app/core/services/sidenav.service';
+import { SidenavService } from 'src/app/core/data/services/sidenav.service';
 import { AuthFacade } from 'src/app/core/state/auth/auth.facade';
 
 @Component({

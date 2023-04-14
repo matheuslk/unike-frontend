@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ILoginResponse } from 'src/app/features/login/data/interfaces/login.interface';
-import { endpoints } from '../data/consts/endpoints.const';
+import { endpoints } from 'src/app/shared/data/consts/endpoints.const';
 
 @Injectable({
   providedIn: 'root',

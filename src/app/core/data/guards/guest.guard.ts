@@ -11,7 +11,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { AuthFacade } from '../state/auth/auth.facade';
+import { AuthFacade } from '../../state/auth/auth.facade';
 
 @Injectable({
   providedIn: 'root',
