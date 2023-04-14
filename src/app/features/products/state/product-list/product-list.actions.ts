@@ -1,10 +1,10 @@
 import { createAction, props } from '@ngrx/store';
-import { HttpError } from 'src/app/core/data/models/http-error.model';
+import { ISearchFilters } from '../../data/interfaces/product-filter.interface';
 import {
-  IFiltersResponse,
-  ISearchFilters,
-} from '../../data/interfaces/product-filter.interface';
-import { IFilteredProductResponse } from '../../data/interfaces/product.interface';
+  ICategory,
+  IFilteredProductResponse,
+} from '../../data/interfaces/product.interface';
+import { HttpError } from 'src/app/shared/data/models/http-error.model';
 
 export const fetchProducts = createAction(
   '[Product - List] Fetch Products',
@@ -25,7 +25,7 @@ export const fetchFilters = createAction('[Product - List] Fetch Filters');
 
 export const fetchFiltersSuccess = createAction(
   '[Product - List] Fetch Filters Success',
-  props<{ filters: IFiltersResponse }>()
+  props<{ filters: ICategory[] }>()
 );
 
 export const fetchFiltersError = createAction(

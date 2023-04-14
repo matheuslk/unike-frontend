@@ -9,25 +9,22 @@ export interface IImage {
   product_id: number;
 }
 
-export interface ISize {
-  id: number;
-  size: string;
-  product_id: number;
-}
-
 export interface IProduct {
   id: number;
   name: string;
   price: number;
-  amount: number;
   description: string;
   category_id: number;
+}
+
+export interface IProductFormBody extends Omit<IProduct, 'id'> {
+  files: File[];
+  removeFiles?: boolean;
 }
 
 export interface IProductResponse extends IProduct {
   category: ICategory;
   images: IImage[];
-  sizes: ISize[];
 }
 
 export interface IFilteredProductResponse extends IProduct {

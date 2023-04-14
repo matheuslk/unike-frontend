@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
 
+import { ISearchFilters } from '../../data/interfaces/product-filter.interface';
 import {
-  ISearchFilters,
-  IFiltersResponse,
-} from '../../data/interfaces/product-filter.interface';
-import { IFilteredProductResponse } from '../../data/interfaces/product.interface';
+  ICategory,
+  IFilteredProductResponse,
+} from '../../data/interfaces/product.interface';
 
 import * as ProductListActions from './product-list.actions';
 import * as ProductListSelectors from './product-list.selectors';
+import { INGRXData } from 'src/app/shared/data/interfaces/ngrx-data.interface';
 
 @Injectable()
 export class ProductListFacade {
@@ -32,7 +32,7 @@ export class ProductListFacade {
     return this.store.select(ProductListSelectors.selectProducts);
   }
 
-  selectFilters$(): Observable<INGRXData<IFiltersResponse>> {
+  selectFilters$(): Observable<INGRXData<ICategory[]>> {
     return this.store.select(ProductListSelectors.selectFilters);
   }
 

@@ -7,17 +7,15 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { IJWT } from './core/data/interfaces/jwt.interface';
-import { INGRXData } from './core/data/interfaces/ngrx-data.interface';
-import { LocalStorageService } from './core/services/local-storage.service';
-import { SidenavService } from './core/services/sidenav.service';
-import { SvgIconsService } from './core/services/svg-icons.service';
 import { AuthFacade } from './core/state/auth/auth.facade';
-import {
-  IFiltersResponse,
-  ISearchFilters,
-} from './features/products/data/interfaces/product-filter.interface';
+import { ISearchFilters } from './features/products/data/interfaces/product-filter.interface';
 import { ProductListFacade } from './features/products/state/product-list/product-list.facade';
+import { ICategory } from './features/products/data/interfaces/product.interface';
+import { LocalStorageService } from './core/data/services/local-storage.service';
+import { SidenavService } from './core/data/services/sidenav.service';
+import { SvgIconsService } from './core/data/services/svg-icons.service';
+import { IJWT } from './shared/data/interfaces/jwt.interface';
+import { INGRXData } from './shared/data/interfaces/ngrx-data.interface';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +25,7 @@ import { ProductListFacade } from './features/products/state/product-list/produc
 export class AppComponent implements OnInit, AfterViewInit {
   showProductFilterSizes!: boolean;
 
-  productFilters$!: Observable<INGRXData<IFiltersResponse>>;
+  productFilters$!: Observable<INGRXData<ICategory[]>>;
   productSearchFilters$!: Observable<ISearchFilters>;
 
   @ViewChild('menuSidenav')
@@ -93,19 +91,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.svgIconsService.register();
   }
 
-  handleFilterOnChange(
-    event: MatSelectionListChange,
-    list: 'categories' | 'sizes'
-  ): void {
+  handleFilterOnChange(event: MatSelectionListChange): void {
     console.log('HANDLE FILTER ON CHANGE', event.source._value);
-    let filters: Partial<ISearchFilters> = {
-      [list]: event.source._value ? event.source._value : [],
-    };
-    // DELETE SIZES IF CATEGORY EQUALS '1'
-    if (list === 'categories' && !event.source._value?.includes('1')) {
-      filters.sizes = [];
-    }
-    this.productListFacade.setSearchFilters(filters);
+    this.productListFacade.setSearchFilters({
+      categories: event.source._value ? event.source._value : [],
+    });
   }
 
   redirectToLogin(): void {

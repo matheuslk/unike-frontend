@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { HttpError } from 'src/app/core/data/models/http-error.model';
-import { ProductService } from '../../data/services/product.service';
 import * as ProductListActions from './product-list.actions';
+import { HttpError } from 'src/app/shared/data/models/http-error.model';
+import { ProductService } from '../../data/services/product.service';
 
 @Injectable()
 export class ProductListEffects {
@@ -33,7 +33,7 @@ export class ProductListEffects {
     this.actions$.pipe(
       ofType(ProductListActions.fetchFilters),
       switchMap(() => {
-        return this.productService.fetchFilters().pipe(
+        return this.productService.fetchCategories().pipe(
           switchMap(filters =>
             of(ProductListActions.fetchFiltersSuccess({ filters }))
           ),

@@ -1,15 +1,15 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
-import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
+import { ISearchFilters } from '../../data/interfaces/product-filter.interface';
 import {
-  ISearchFilters,
-  IFiltersResponse,
-} from '../../data/interfaces/product-filter.interface';
-import { IFilteredProductResponse } from '../../data/interfaces/product.interface';
+  ICategory,
+  IFilteredProductResponse,
+} from '../../data/interfaces/product.interface';
 import * as ProductListActions from './product-list.actions';
+import { INGRXData } from 'src/app/shared/data/interfaces/ngrx-data.interface';
 
 export interface ProductListState {
   products: INGRXData<IFilteredProductResponse[]>;
-  filters: INGRXData<IFiltersResponse>;
+  filters: INGRXData<ICategory[]>;
   searchFilters: ISearchFilters;
 }
 
@@ -29,7 +29,6 @@ const initialState: ProductListState = {
   searchFilters: {
     name: '',
     categories: [],
-    sizes: [],
   },
 };
 
@@ -104,7 +103,6 @@ export const reducer: ActionReducer<ProductListState, Action> = createReducer(
         ...state.searchFilters,
         name: filters.name ?? state.searchFilters.name,
         categories: filters.categories ?? state.searchFilters.categories,
-        sizes: filters.sizes ?? state.searchFilters.sizes,
       },
     };
   })
