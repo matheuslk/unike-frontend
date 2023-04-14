@@ -1,6 +1,6 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
-import { IJWT } from '../../data/interfaces/jwt.interface';
 import * as AuthActions from './auth.actions';
+import { IJWT } from 'src/app/shared/data/interfaces/jwt.interface';
 
 export interface AuthState {
   isAuthenticated?: boolean;

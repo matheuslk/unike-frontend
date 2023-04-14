@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { ILoginResponse } from 'src/app/features/login/data/interfaces/login.interface';
-import { IJWT } from '../../data/interfaces/jwt.interface';
+import { IJWT } from 'src/app/shared/data/interfaces/jwt.interface';
 
 export const check = createAction('[Auth] Check If Is Authenticated');
 

@@ -3,15 +3,15 @@ import { MatSelectionList } from '@angular/material/list';
 import { Router } from '@angular/router';
 import { Observable, Subject, merge } from 'rxjs';
 import { skip, take, takeUntil } from 'rxjs/operators';
-import { ERROR_MESSAGES } from 'src/app/core/data/enums/error-messages.enum';
-import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
-import { SidenavService } from 'src/app/core/services/sidenav.service';
+import { ISearchFilters } from '../../data/interfaces/product-filter.interface';
 import {
-  IFiltersResponse,
-  ISearchFilters,
-} from '../../data/interfaces/product-filter.interface';
-import { IFilteredProductResponse } from '../../data/interfaces/product.interface';
+  ICategory,
+  IFilteredProductResponse,
+} from '../../data/interfaces/product.interface';
 import { ProductListFacade } from '../../state/product-list/product-list.facade';
+import { ERROR_MESSAGES } from 'src/app/shared/data/enums/error-messages.enum';
+import { INGRXData } from 'src/app/shared/data/interfaces/ngrx-data.interface';
+import { SidenavService } from 'src/app/core/data/services/sidenav.service';
 
 @Component({
   selector: 'app-product-list',
@@ -22,7 +22,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   viewDestroyed$!: Subject<void>;
 
   products$!: Observable<INGRXData<IFilteredProductResponse[]>>;
-  filters$!: Observable<INGRXData<IFiltersResponse>>;
+  filters$!: Observable<INGRXData<ICategory[]>>;
   searchFilters$!: Observable<ISearchFilters>;
 
   productsErrorMessage?: string;

@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { HttpError } from 'src/app/core/data/models/http-error.model';
 import { IProductResponse } from '../../data/interfaces/product.interface';
+import { HttpError } from 'src/app/shared/data/models/http-error.model';
 
 export const findProduct = createAction(
   '[Product - Find] Fetch Product',

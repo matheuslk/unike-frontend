@@ -8,9 +8,9 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ERROR_MESSAGES } from '../data/enums/error-messages.enum';
-import { HttpError } from '../data/models/http-error.model';
 import { AuthFacade } from '../state/auth/auth.facade';
+import { ERROR_MESSAGES } from 'src/app/shared/data/enums/error-messages.enum';
+import { HttpError } from 'src/app/shared/data/models/http-error.model';
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(public authFacade: AuthFacade) {}

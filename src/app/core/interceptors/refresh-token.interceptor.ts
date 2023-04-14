@@ -8,10 +8,10 @@ import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap, take } from 'rxjs/operators';
 import { ILoginResponse } from 'src/app/features/login/data/interfaces/login.interface';
-import { isPrivateEndpoint } from '../data/functions/is-private-endpoint.function';
-import { HttpError } from '../data/models/http-error.model';
-import { AuthService } from '../services/auth.service';
 import { AuthFacade } from '../state/auth/auth.facade';
+import { isPrivateEndpoint } from 'src/app/shared/data/functions/is-private-endpoint.function';
+import { HttpError } from 'src/app/shared/data/models/http-error.model';
+import { AuthService } from '../data/services/auth.service';
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {
   constructor(

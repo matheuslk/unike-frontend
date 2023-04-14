@@ -3,19 +3,19 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY } from 'rxjs';
 import { catchError, exhaustMap, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { IJWT } from '../../data/interfaces/jwt.interface';
-import { AuthService } from '../../services/auth.service';
-import { LocalStorageService } from '../../services/local-storage.service';
 import * as AuthActions from './auth.actions';
 import { AuthFacade } from './auth.facade';
+import { IJWT } from 'src/app/shared/data/interfaces/jwt.interface';
+import { LocalStorageService } from '../../data/services/local-storage.service';
+import { AuthService } from '../../data/services/auth.service';
 
 @Injectable()
 export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authFacade: AuthFacade,
-    private authService: AuthService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private authService: AuthService
   ) {}
 
   check$ = createEffect(

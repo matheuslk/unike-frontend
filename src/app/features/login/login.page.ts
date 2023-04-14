@@ -3,10 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { skip, takeUntil } from 'rxjs/operators';
-import { getFormErrorMessage } from 'src/app/core/data/functions/get-form-error-message.function';
 import { AuthFacade } from 'src/app/core/state/auth/auth.facade';
 import { LOGIN_FORM_ERROR_MESSAGES } from './data/consts/form-error-messages.const';
 import { ILoginRequest } from './data/interfaces/login.interface';
+import { getFormErrorMessage } from 'src/app/shared/data/functions/get-form-error-message.function';
 import { LoginService } from './data/services/login.service';
 @Component({
   selector: 'app-login',

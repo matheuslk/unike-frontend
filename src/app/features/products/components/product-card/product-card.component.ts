@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { endpoints } from 'src/app/core/data/consts/endpoints.const';
+import { endpoints } from 'src/app/shared/data/consts/endpoints.const';
 import { IFilteredProductResponse } from '../../data/interfaces/product.interface';
 
 @Component({

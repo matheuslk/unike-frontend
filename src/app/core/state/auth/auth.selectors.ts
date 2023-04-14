@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { IJWT } from '../../data/interfaces/jwt.interface';
 import { authFeatureKey, AuthState } from './auth.reducer';
+import { IJWT } from 'src/app/shared/data/interfaces/jwt.interface';
 
 export const selectAuthState = createFeatureSelector<AuthState>(authFeatureKey);
 

@@ -3,9 +3,9 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { ILoginResponse } from 'src/app/features/login/data/interfaces/login.interface';
-import { IJWT } from '../../data/interfaces/jwt.interface';
 import * as AuthActions from './auth.actions';
 import * as AuthSelectors from './auth.selectors';
+import { IJWT } from 'src/app/shared/data/interfaces/jwt.interface';
 
 @Injectable({
   providedIn: 'root',

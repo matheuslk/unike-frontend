@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
 import { IProductResponse } from '../../data/interfaces/product.interface';
 
 import * as ProductActions from './product.actions';
 import * as ProductSelectors from './product.selectors';
+import { INGRXData } from 'src/app/shared/data/interfaces/ngrx-data.interface';
 
 @Injectable()
 export class ProductFacade {

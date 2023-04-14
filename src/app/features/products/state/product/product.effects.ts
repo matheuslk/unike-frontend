@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
-import { HttpError } from 'src/app/core/data/models/http-error.model';
-import { ProductService } from '../../data/services/product.service';
+
 import * as ProductActions from './product.actions';
+import { HttpError } from 'src/app/shared/data/models/http-error.model';
+import { ProductService } from '../../data/services/product.service';
 
 @Injectable()
 export class ProductEffects {

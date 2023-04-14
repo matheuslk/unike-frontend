@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { endpoints } from 'src/app/core/data/consts/endpoints.const';
+import { endpoints } from 'src/app/shared/data/consts/endpoints.const';
 import { ILoginRequest, ILoginResponse } from '../interfaces/login.interface';
 
 @Injectable()

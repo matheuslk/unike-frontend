@@ -7,9 +7,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { LoginService } from './data/services/login.service';
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginPage } from './login.page';
+import { LoginService } from './data/services/login.service';
 
 @NgModule({
   declarations: [LoginPage],

@@ -7,8 +7,8 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
-import { isPrivateEndpoint } from '../data/functions/is-private-endpoint.function';
 import { AuthFacade } from '../state/auth/auth.facade';
+import { isPrivateEndpoint } from 'src/app/shared/data/functions/is-private-endpoint.function';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(public authFacade: AuthFacade) {}

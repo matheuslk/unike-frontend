@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CanRenderGuard } from './core/guards/can-render.guard';
+import { CanRenderGuard } from './core/data/guards/can-render.guard';
 
 const routes: Routes = [
   {

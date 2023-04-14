@@ -1,7 +1,7 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
-import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
 import { IProductResponse } from '../../data/interfaces/product.interface';
 import * as ProductListActions from './product.actions';
+import { INGRXData } from 'src/app/shared/data/interfaces/ngrx-data.interface';
 
 export interface ProductState {
   product: INGRXData<IProductResponse>;

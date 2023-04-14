@@ -2,13 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
-import { INGRXData } from 'src/app/core/data/interfaces/ngrx-data.interface';
-import { endpoints } from '../../../../core/data/consts/endpoints.const';
+import { endpoints } from '../../../../shared/data/consts/endpoints.const';
 import {
   IImage,
   IProductResponse,
 } from '../../data/interfaces/product.interface';
 import { ProductFacade } from '../../state/product/product.facade';
+import { INGRXData } from 'src/app/shared/data/interfaces/ngrx-data.interface';
 
 @Component({
   selector: 'app-product',

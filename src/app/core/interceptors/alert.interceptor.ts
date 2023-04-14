@@ -7,8 +7,8 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { HttpError } from '../data/models/http-error.model';
-import { AlertService } from '../services/alert.service';
+import { HttpError } from 'src/app/shared/data/models/http-error.model';
+import { AlertService } from '../data/services/alert.service';
 @Injectable()
 export class AlertInterceptor implements HttpInterceptor {
   constructor(private alertService: AlertService) {}

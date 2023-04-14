@@ -1,4 +1,4 @@
-import { IFormErrorMessages } from 'src/app/core/data/interfaces/form-error-messages.interface';
+import { IFormErrorMessages } from 'src/app/shared/data/interfaces/form-error-messages.interface';
 
 export const PRODUCT_STORE_FORM_ERROR_MESSAGES: IFormErrorMessages = {
   name: {
