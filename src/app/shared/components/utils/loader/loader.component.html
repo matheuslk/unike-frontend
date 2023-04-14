@@ -1,3 +1,5 @@
-<div class="loader d-flex justify-content-center">
+<div
+  [ngClass]="type === 'dots' ? 'dots-loader' : 'default-loader'"
+  class="d-flex justify-content-center">
   <img [src]="loadingImageUrl" alt="Imagem de carregamento" />
 </div>

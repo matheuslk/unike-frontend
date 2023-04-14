@@ -5,6 +5,8 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./loader.component.scss'],
 })
 export class LoaderComponent implements OnInit {
+  @Input() type: 'default' | 'dots' = 'default';
+
   loadingImageUrl!: string;
 
   constructor() {}
@@ -14,6 +16,9 @@ export class LoaderComponent implements OnInit {
   }
 
   initData(): void {
-    this.loadingImageUrl = '../../../../assets/img/gifs/loading.gif';
+    this.loadingImageUrl =
+      this.type === 'dots'
+        ? '../../../../assets/img/gifs/loading-dots.gif'
+        : '../../../../assets/img/gifs/loading-default.gif';
   }
 }

@@ -8,13 +8,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoaderComponent } from './components/utils/loader/loader.component';
-import { NavbarLogoComponent } from './components/navbar-logo/navbar-logo.component';
-import { NavbarMenuComponent } from './components/navbar-menu/navbar-menu.component';
+import { NavbarLogoComponent } from './components/navbar/navbar-logo/navbar-logo.component';
+import { NavbarMenuComponent } from './components/navbar/navbar-menu/navbar-menu.component';
+import { CapitalizePipe } from './data/pipes/capitalize.pipe';
 
 const components = [NavbarComponent, LoaderComponent];
-const internalComponents = [NavbarLogoComponent];
+const internalComponents = [NavbarLogoComponent, NavbarMenuComponent];
+const pipes = [CapitalizePipe];
+
 @NgModule({
-  declarations: [...components, ...internalComponents, NavbarMenuComponent],
+  declarations: [...internalComponents, ...components, ...pipes],
   imports: [
     CommonModule,
     FormsModule,
@@ -25,6 +28,6 @@ const internalComponents = [NavbarLogoComponent];
     MatInputModule,
     MatFormFieldModule,
   ],
-  exports: [...components],
+  exports: [...components, ...pipes],
 })
 export class SharedModule {}
