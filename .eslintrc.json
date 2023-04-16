@@ -10,11 +10,9 @@
       },
       "extends": [
         "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates",
-        "plugin:prettier/recommended"
+        "plugin:@angular-eslint/template/process-inline-templates"
       ],
       "rules": {
-        "@typescript-eslint/explicit-function-return-type": "error",
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -41,18 +39,13 @@
     },
     {
       "files": ["*.html"],
-      "extends": [
-        "plugin:@angular-eslint/template/recommended",
-        "plugin:prettier/recommended"
-      ],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
       "rules": {}
     },
     {
-      "files": ["*.html"],
-      "excludedFiles": ["*inline-template-*.component.html"],
-      "rules": {
-        "prettier/prettier": ["error", { "parser": "angular" }]
-      }
+      "files": ["*.ts", "*.html"],
+      "extends": ["plugin:prettier/recommended"],
+      "rules": {}
     }
   ]
 }
