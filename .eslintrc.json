@@ -34,7 +34,8 @@
           {
             "suffixes": ["Page", "Component"]
           }
-        ]
+        ],
+        "no-else-return": "error"
       }
     },
     {
